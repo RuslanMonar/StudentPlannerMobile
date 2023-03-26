@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { TouchableOpacity } from 'react-native';
-
+import axios from 'axios';
 import {WarningOutlineIcon, Box, Heading, VStack, FormControl, Input, Image, Button, Center, Text } from "native-base";
 
 import * as AppStyle from "../../../styles/AppStyle";
@@ -15,7 +15,17 @@ const SignInScreen = ({ navigation }) => {
   const handlePasswordChange = (e) => setPassword(e.nativeEvent.text);
 
   const signIn = () => {
-    setIsValidEmail(Validation.validateEmail(email));
+    //setIsValidEmail(Validation.validateEmail(email));
+
+    axios.get('http://192.168.31.61:18323/api/studentplanner/Auth/Test')
+      .then(response => {
+      console.log(response);
+    })
+      .catch(error => {
+      console.log(error);
+      });
+    
+      console.log("54321");
   }
 
   return (
