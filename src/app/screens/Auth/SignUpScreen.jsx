@@ -5,20 +5,41 @@ import { WarningOutlineIcon, Box, Heading, VStack, FormControl, Input, Image, Bu
 
 import * as AppStyle from "../../../styles/AppStyle";
 import * as Validation from '../../utils/Validation';
+import PopupLoader from './../../components/PopupLoader';
 
 const SignUpScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [isValidEmail, setIsValidEmail] = useState(true);
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleEmailChange = (e) => setEmail(e.nativeEvent.text);
   const handlePasswordChange = (e) => setPassword(e.nativeEvent.text);
 
   const signUp = () => {
-    setIsValidEmail(Validation.validateEmail(email));
+    validationResult = Validation.validateEmail(email);
+    setIsValidEmail(validationResult);
+
+    if (validationResult) {
+      setLoading(true);
+      axios.post('http://10.0.2.2:45455/api/studentplanner/Auth/SignUp', {
+        "email": email,
+        "password": password
+      })
+        .then(response => {
+          console.log(response.data);
+          setLoading(false);
+        })
+        .catch(error => {
+          console.log(error);
+          setLoading(false);
+        });
+    }
   }
 
   return (
+    <Center w="100%" h="100%">
+      {loading ? (<PopupLoader />) : null}
     <Center h="80%" w="100%">
       <Box h="30%" w="100%">
         <Center >
@@ -67,7 +88,8 @@ const SignUpScreen = ({ navigation }) => {
           </Center>
         </Box>
       </Box>
-    </Center>
+      </Center>
+      </Center>
   )
 }
 
