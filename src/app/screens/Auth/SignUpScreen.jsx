@@ -4,21 +4,38 @@ import { TouchableOpacity } from 'react-native';
 import { WarningOutlineIcon, Box, Heading, VStack, FormControl, Input, Image, Button, Center, Text } from "native-base";
 
 import * as AppStyle from "../../../styles/AppStyle";
-import * as Validation from '../../utils/Validation';
+import * as Validation from '../../utils/validation';
+import PopupLoader from './../../components/PopupLoader';
+import authService from '../../services/authService'; 
 
 const SignUpScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [isValidEmail, setIsValidEmail] = useState(true);
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleEmailChange = (e) => setEmail(e.nativeEvent.text);
   const handlePasswordChange = (e) => setPassword(e.nativeEvent.text);
 
   const signUp = () => {
-    setIsValidEmail(Validation.validateEmail(email));
+    validationResult = Validation.validateEmail(email);
+    setIsValidEmail(validationResult);
+
+    if (validationResult) {
+      setLoading(true);
+      authService.SignUp(email, password)
+        .then(response => {
+          setLoading(false);
+        })
+        .catch(error => {
+          setLoading(false);
+        });
+    }
   }
 
   return (
+    <Box w="100%" h="100%">
+      {loading ? (<PopupLoader />) : null}
     <Center h="80%" w="100%">
       <Box h="30%" w="100%">
         <Center >
@@ -67,7 +84,8 @@ const SignUpScreen = ({ navigation }) => {
           </Center>
         </Box>
       </Box>
-    </Center>
+      </Center>
+      </Box>
   )
 }
 
