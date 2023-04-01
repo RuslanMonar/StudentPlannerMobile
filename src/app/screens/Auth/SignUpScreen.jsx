@@ -4,8 +4,9 @@ import { TouchableOpacity } from 'react-native';
 import { WarningOutlineIcon, Box, Heading, VStack, FormControl, Input, Image, Button, Center, Text } from "native-base";
 
 import * as AppStyle from "../../../styles/AppStyle";
-import * as Validation from '../../utils/Validation';
+import * as Validation from '../../utils/validation';
 import PopupLoader from './../../components/PopupLoader';
+import authService from '../../services/authService'; 
 
 const SignUpScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -22,23 +23,18 @@ const SignUpScreen = ({ navigation }) => {
 
     if (validationResult) {
       setLoading(true);
-      axios.post('http://10.0.2.2:45455/api/studentplanner/Auth/SignUp', {
-        "email": email,
-        "password": password
-      })
+      authService.SignUp(email, password)
         .then(response => {
-          console.log(response.data);
           setLoading(false);
         })
         .catch(error => {
-          console.log(error);
           setLoading(false);
         });
     }
   }
 
   return (
-    <Center w="100%" h="100%">
+    <Box w="100%" h="100%">
       {loading ? (<PopupLoader />) : null}
     <Center h="80%" w="100%">
       <Box h="30%" w="100%">
@@ -89,7 +85,7 @@ const SignUpScreen = ({ navigation }) => {
         </Box>
       </Box>
       </Center>
-      </Center>
+      </Box>
   )
 }
 
