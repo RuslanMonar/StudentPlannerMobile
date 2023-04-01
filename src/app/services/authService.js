@@ -6,7 +6,6 @@ const SignIn = (Email, Password) => (dispatch) => {
     return AuthGateway.SignIn(Email, Password).then(
         (response) => {
             var user = JwtDecoder.GetUserInfo(response.data.token);
-            console.log('adasdasd');
             dispatch(SaveUserAction({ user }));
             return Promise.resolve();
         }

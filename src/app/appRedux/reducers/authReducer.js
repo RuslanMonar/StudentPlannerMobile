@@ -1,20 +1,19 @@
-import jwt_decode from "jwt-decode";
+import JwtDecoder from '../../utils/jwtDecoder';
 
 // Redux reducer for authentication state
 export const SAVE_USER_SUCCESS = "SAVE_USER_SUCCESS";
 export const LOGOUT = "LOGOUT";
-
-var initialState = { isLoggedIn: false, user: null };
 
 //var user = gettoken;
 var user = '';
 var token = '';
 
 if (user) {
-  var user = jwt_decode(token);
-  user = { name: user.unique_name, id: user.nameid, email: user.email, image: user.image };
-
+  var user = JwtDecoder.GetUserInfo(token);
   initialState = { isLoggedIn: true, user };
+}
+else {
+  initialState = { isLoggedIn: false, user: null };
 }
 
 export const AuthReducer = (state = initialState, action) => {
@@ -34,7 +33,6 @@ export const AuthReducer = (state = initialState, action) => {
         user: null,
       };
     default:
-      console.log("test redux")
       return state;
   }
 };
