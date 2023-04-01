@@ -1,22 +1,24 @@
 import JwtDecoder from '../../utils/jwtDecoder';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Redux reducer for authentication state
 export const SAVE_USER_SUCCESS = "SAVE_USER_SUCCESS";
 export const LOGOUT = "LOGOUT";
 
-//var user = gettoken;
-var user = '';
-var token = '';
+const getData = async () => await AsyncStorage.getItem('StudentPlannerToken');
 
-if (user) {
-  var user = JwtDecoder.GetUserInfo(token);
-  initialState = { isLoggedIn: true, user };
-}
-else {
-  initialState = { isLoggedIn: false, user: null };
-}
+export const AuthReducer = async (state, action) => {
+  let initialState = {};
+  const token = await getData();
 
-export const AuthReducer = (state = initialState, action) => {
+  if (token) { 
+    const user = JwtDecoder.GetUserInfo(token);
+    initialState = { isLoggedIn: true, user };
+  }
+  else {
+    initialState = { isLoggedIn: false, user: null };
+  }
+  
   const { type, payload } = action;
 
   switch (type) {
@@ -33,6 +35,6 @@ export const AuthReducer = (state = initialState, action) => {
         user: null,
       };
     default:
-      return state;
+      return state || initialState;
   }
 };
