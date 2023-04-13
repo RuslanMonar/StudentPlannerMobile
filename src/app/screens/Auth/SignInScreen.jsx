@@ -13,7 +13,7 @@ const SignInScreen = ({ navigation }) => {
   const [isValidEmail, setIsValidEmail] = useState(true);
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  
+
   const dispatch = useDispatch();
 
   const handleEmailChange = (e) => setEmail(e.nativeEvent.text);
@@ -27,7 +27,10 @@ const SignInScreen = ({ navigation }) => {
       setLoading(true);
 
       dispatch(authService.SignIn(email, password))
-        .then(response => setLoading(false))
+        .then(response => {
+          setLoading(false);
+          navigation.navigate('MainScreen');
+        })
         .catch(error => setLoading(false));
     }
   }

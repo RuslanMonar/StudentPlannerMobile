@@ -25,7 +25,6 @@ const SignUp = (Email, Password) => async (dispatch) => {
     );
 };
 
-
 export default {
     SignUp,
     SignIn
