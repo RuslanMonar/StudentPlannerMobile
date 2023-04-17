@@ -9,30 +9,24 @@ const Stack = createNativeStackNavigator();
 
 const AuthNavigator = () => {
     var userStore = useSelector(state => state.AuthReducer);
-
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     useEffect(() => {
         async function fetchAuthState() {
             const resolvedAuthState = await userStore;
             resolvedAuthState.isLoggedIn ? setIsLoggedIn(true) : setIsLoggedIn(false);
-            console.log(resolvedAuthState);
         }
         fetchAuthState();
     }, [])
 
     return (
         <Stack.Navigator screenOptions={{
-            headerShown: false, 
+            headerShown: false,
             header: () => null,
             contentStyle: { backgroundColor: 'white' },
         }}>
-            {!isLoggedIn && (
-                <>
-                    <Stack.Screen name="SignInScreen" component={SignInScreen} />
-                    <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
-                </>
-            )}
+            <Stack.Screen name="SignInScreen" component={SignInScreen} />
+            <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
             <Stack.Screen name="MainScreen" component={MainMenuNavigator} />
         </Stack.Navigator>
     );

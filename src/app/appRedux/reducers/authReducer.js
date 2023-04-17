@@ -7,6 +7,15 @@ export const LOGOUT = "LOGOUT";
 
 const getData = async () => await AsyncStorage.getItem('StudentPlannerToken');
 
+async function logOut() {
+  try {
+    await AsyncStorage.removeItem('StudentPlannerToken');
+    console.log(`Successfully removed item with key StudentPlannerToken`);
+  } catch (error) {
+    console.log(`Error removing item with key StudentPlannerToken: ${error}`);
+  }
+}
+
 export const AuthReducer = async (state, action) => {
   let initialState = {};
   const token = await getData();
@@ -29,6 +38,8 @@ export const AuthReducer = async (state, action) => {
         user: payload.user,
       };
     case LOGOUT:
+      console.log("redux log out called")
+      await logOut();
       return {
         ...state,
         isLoggedIn: false,
