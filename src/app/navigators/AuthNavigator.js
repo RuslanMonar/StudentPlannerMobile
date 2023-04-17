@@ -1,6 +1,5 @@
 import SignInScreen from "../screens/Auth/SignInScreen";
 import SignUpScreen from "../screens/Auth/SignUpScreen";
-import MainScreen from "../screens/Main/MainScreen";
 import MainMenuNavigator from "./MainMenuNavigator";
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack'

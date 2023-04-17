@@ -8,7 +8,6 @@ const MainScreen = ({ navigation }) => {
             <SafeAreaView>
                 <Text>Hello menu</Text>
             </SafeAreaView>
-            
         </Box>
     );
 }
