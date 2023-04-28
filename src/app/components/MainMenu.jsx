@@ -15,13 +15,15 @@ import {
 import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import * as AppStyle from "../../styles/AppStyle";
 import { useSelector, useDispatch } from "react-redux";
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { LogOutAction } from "../appRedux/actionsCreator/authActions";
+import { AuthContext } from "../context/AuthContext";
 
 const MainMenu = (props) => {
   var userStore = useSelector(state => state.AuthReducer);
   const dispatch = useDispatch();
   const [user, setUser] = useState({});
+  const { setIsLoggedIn } = useContext(AuthContext);
 
   useEffect(() => {
     async function fetchAuthState() {
@@ -33,10 +35,9 @@ const MainMenu = (props) => {
     fetchAuthState();
   }, [])
 
-  const logOut = () => {
-    console.log("hello");
+  const logOut = async () => {
     dispatch(LogOutAction({}));
-    props.navigation.navigate("SignUpScreen");
+    setIsLoggedIn(false);
   }
 
 

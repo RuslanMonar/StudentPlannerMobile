@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useDispatch } from "react-redux";
 import { TouchableOpacity } from 'react-native';
 import { WarningOutlineIcon, Box, Heading, VStack, FormControl, Input, Image, Button, Center, Text } from "native-base";
@@ -7,12 +7,14 @@ import * as AppStyle from "../../../styles/AppStyle";
 import * as Validation from '../../utils/validation';
 import PopupLoader from './../../components/PopupLoader';
 import authService from '../../services/authService';
+import { AuthContext } from '../../context/AuthContext';
 
 const SignInScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [isValidEmail, setIsValidEmail] = useState(true);
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const { setIsLoggedIn } = useContext(AuthContext);
 
   const dispatch = useDispatch();
 
@@ -29,7 +31,7 @@ const SignInScreen = ({ navigation }) => {
       dispatch(authService.SignIn(email, password))
         .then(response => {
           setLoading(false);
-          navigation.navigate('MainScreen');
+          setIsLoggedIn(true)
         })
         .catch(error => setLoading(false));
     }
