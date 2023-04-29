@@ -67,7 +67,7 @@ export const Expandable = ({ item }) => {
                                 style={styles.content}
                                 onPress={() => alert('Id: ' + item.id + ' val: ' + item.val)}>
                                 <Box ml="5%" display="flex" flexDirection="row" alignItems="center">
-                                    <Avatar bg="#5d0fab" size="10px" />
+                                    <Avatar bg="#5d0fab" size="12px" />
                                     <Text style={styles.text}>
                                         {item.val}
                                     </Text>
