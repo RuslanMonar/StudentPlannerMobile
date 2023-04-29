@@ -1,5 +1,5 @@
 import { DrawerContentScrollView } from "@react-navigation/drawer";
-import { TouchableOpacity } from 'react-native';
+import { TouchableOpacity, LayoutAnimation, UIManager } from 'react-native';
 import {
   Box,
   Pressable,
@@ -18,12 +18,14 @@ import { useSelector, useDispatch } from "react-redux";
 import { useState, useEffect, useContext } from 'react';
 import { LogOutAction } from "../appRedux/actionsCreator/authActions";
 import { AuthContext } from "../context/AuthContext";
+import { ProjectsMenu } from "./ProjectsMenu";
 
 const MainMenu = (props) => {
   var userStore = useSelector(state => state.AuthReducer);
   const dispatch = useDispatch();
   const [user, setUser] = useState({});
   const { setIsLoggedIn } = useContext(AuthContext);
+
 
   useEffect(() => {
     async function fetchAuthState() {
@@ -94,7 +96,7 @@ const MainMenu = (props) => {
         <VStack divider={<Divider />} space="4">
           <VStack space="3">
             {props.state.routeNames.map((name, index) => (
-              <Pressable
+              <Pressable key={index}
                 px="5"
                 py="3"
                 rounded="md"
@@ -127,54 +129,13 @@ const MainMenu = (props) => {
               </Pressable>
             ))}
           </VStack>
-          <VStack space="5">
-            <Text fontWeight="500" fontSize="14" px="5" color="gray.500">
-              Labels
-            </Text>
-            <VStack space="3">
-              <Pressable px="5" py="3">
-                <HStack space="7" alignItems="center">
-                  <Icon
-                    color="gray.500"
-                    size="5"
-                    as={<MaterialCommunityIcons name="bookmark" />}
-                  />
-                  <Text color="gray.700" fontWeight="500">
-                    Family
-                  </Text>
-                </HStack>
-              </Pressable>
-              <Pressable px="5" py="2">
-                <HStack space="7" alignItems="center">
-                  <Icon
-                    color="gray.500"
-                    size="5"
-                    as={<MaterialCommunityIcons name="bookmark" />}
-                  />
-                  <Text color="gray.700" fontWeight="500">
-                    Friends
-                  </Text>
-                </HStack>
-              </Pressable>
-              <Pressable px="5" py="3">
-                <HStack space="7" alignItems="center">
-                  <Icon
-                    color="gray.500"
-                    size="5"
-                    as={<MaterialCommunityIcons name="bookmark" />}
-                  />
-                  <Text fontWeight="500" color="gray.700">
-                    Work
-                  </Text>
-                </HStack>
-              </Pressable>
-            </VStack>
-          </VStack>
         </VStack>
       </VStack>
+      <ProjectsMenu />
     </DrawerContentScrollView>
   );
 }
 
 export default MainMenu;
+
 
