@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Input, InputGroup, InputLeftAddon, Box, VStack, Avatar, Icon, Pressable, Button, Text } from "native-base";
-import { MaterialIcons, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import * as AppStyle from "../../../styles/AppStyle";
 
 export const AddProject = () => {

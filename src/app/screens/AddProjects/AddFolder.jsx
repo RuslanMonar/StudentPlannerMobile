@@ -2,13 +2,28 @@ import React, { useState } from 'react'
 import { Input, InputGroup, InputLeftAddon, Box, VStack, Avatar, Icon, Pressable, Button, Text } from "native-base";
 import { MaterialIcons, Ionicons } from "@expo/vector-icons";
 import * as AppStyle from "../../../styles/AppStyle";
+import foldersGateway from '../../gateways/foldersGateway';
+import PopupLoader from './../../components/PopupLoader';
 
 export const AddFolder = () => {
   const colors = ['#FF6B6B', '#FFE66D', '#8DD7CF', '#FFD57E', '#B2FFA9', '#FFB347', '#83D0F2', '#FF8FB2', '#AEEEEE', '#FFA07A', '#90EE90', '#FA8072', '#BA55D3', '#FFC0CB', '#FF69B4', '#20B2AA', '#FFD700', '#87CEFA', '#6495ED', '#40E0D0', '#7B68EE', '#9370DB', '#AFEEEE', '#FF7F50', '#3CB371', '#87CEEB', '#FFA500', '#6B8E23', '#00FA9A', '#FF69B4'];
   const [activeColor, setActiveColor] = useState(colors[0]);
+  const [folderName, setFolderName] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const createFolder = () => {
+    setLoading(true);
+    foldersGateway.CreateFolder(folderName, activeColor)
+      .then(response => {
+        setLoading(false);
+        setIsLoggedIn(true)
+      })
+      .catch(error => setLoading(false));
+  };
 
   return (
     <Box bg="gray.100" height="100%" width="100%">
+      {loading ? (<PopupLoader />) : null}
       <VStack space={4} w="100%" mx="auto">
         <Box mt={5} display="flex" flexDirection="row" alignItems="center" >
           <InputGroup>
@@ -19,7 +34,13 @@ export const AddFolder = () => {
               as={<MaterialIcons name='folder' />}
             />} />
 
-            <Input width="100%" variant="unstyled" bg="white" disabledInputStyle="white" size="md" placeholder="Folder Name"
+            <Input value={folderName} onChangeText={(text) => setFolderName(text)}
+              width="100%"
+              variant="unstyled"
+              bg="white"
+              disabledInputStyle="white"
+              size="md"
+              placeholder="Folder Name"
               _focus={{
                 backgroundColor: "white",
                 borderColor: "none",
@@ -34,7 +55,13 @@ export const AddFolder = () => {
             </Pressable>
           ))}
         </Box>
-        <Button background={AppStyle.yellow} rightIcon={<Icon as={Ionicons} name="checkmark-circle-outline" size="md" color="black" />}>
+
+        <Button onPress={() => createFolder()}
+          background={AppStyle.yellow}
+          rightIcon={<Icon as={Ionicons}
+            name="checkmark-circle-outline"
+            size="md"
+            color="black" />}>
           <Text color="black">Create Folder</Text>
         </Button>
       </VStack>
