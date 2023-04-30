@@ -1,6 +1,7 @@
 import MainMenu from "../components/MainMenu";
 import MainScreen from "../screens/Main/MainScreen";
 import { createDrawerNavigator } from '@react-navigation/drawer';
+import { AddProjectsNavigator } from "./AddProjectsNavigator";
 
 
 const Drawer = createDrawerNavigator();
@@ -14,6 +15,7 @@ const MainMenuNavigator = () => {
             }
         }}>
             <Drawer.Screen name="Home" component={MainScreen} />
+            <Drawer.Screen name="Projects" component={AddProjectsNavigator}  options={{ headerShown: false }}/>
         </Drawer.Navigator>
     );
 };
