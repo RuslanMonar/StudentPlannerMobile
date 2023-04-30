@@ -21,6 +21,8 @@ import { LogOutAction } from "../appRedux/actionsCreator/authActions";
 import { AuthContext } from "../context/AuthContext";
 import { ProjectsMenu } from "./ProjectsMenu";
 import { MenuFooter } from './MenuFooter';
+import { BackButton } from './BackButton';
+import { CONSTANTS } from '../constants/routesNames';
 
 const MainMenu = (props) => {
   var userStore = useSelector(state => state.AuthReducer);
@@ -59,13 +61,7 @@ const MainMenu = (props) => {
         <VStack space="6" my="2" mx="1">
           <Box>
             <Box width="100%" flexDirection="row" alignItems="center">
-              <TouchableOpacity onPress={() => props.navigation.goBack()}>
-                <Icon ml='3'
-                  size="6"
-                  color='black'
-                  as={<MaterialIcons name='arrow-back-ios' />}
-                />
-              </TouchableOpacity>
+              <BackButton onPress={() => props.navigation.goBack()} />
               <Center width="80%">
                 <Image source={require("../../../assets/logo-small.jpg")} alt="Planner" size="xs" width="50%" />
               </Center>
@@ -98,40 +94,40 @@ const MainMenu = (props) => {
           <VStack divider={<Divider />} space="4">
             <VStack space="3">
               {props.state.routeNames.map((name, index) => {
-                if(name != "Projects")
-                return (
-                  <Pressable key={index}
-                    px="5"
-                    py="3"
-                    rounded="md"
-                    bg={
-                      index === props.state.index
-                        ? `${AppStyle.yellow}`
-                        : "transparent"
-                    }
-                    onPress={(event) => {
-                      props.navigation.navigate(name);
-                    }}
-                  >
-                    <HStack space="3" alignItems="center">
-                      <Icon
-                        color={
-                          index === props.state.index ? "black" : "gray.500"
-                        }
-                        size="5"
-                        as={<MaterialCommunityIcons name={getIcon(name)} />}
-                      />
-                      <Text
-                        fontWeight="500"
-                        color={
-                          index === props.state.index ? "black" : "gray.700"
-                        }
-                      >
-                        {name}
-                      </Text>
-                    </HStack>
-                  </Pressable>
-                )
+                if (!(name in CONSTANTS.NestedNavigators))
+                  return (
+                    <Pressable key={index}
+                      px="5"
+                      py="3"
+                      rounded="md"
+                      bg={
+                        index === props.state.index
+                          ? `${AppStyle.yellow}`
+                          : "transparent"
+                      }
+                      onPress={(event) => {
+                        props.navigation.navigate(name);
+                      }}
+                    >
+                      <HStack space="3" alignItems="center">
+                        <Icon
+                          color={
+                            index === props.state.index ? "black" : "gray.500"
+                          }
+                          size="5"
+                          as={<MaterialCommunityIcons name={getIcon(name)} />}
+                        />
+                        <Text
+                          fontWeight="500"
+                          color={
+                            index === props.state.index ? "black" : "gray.700"
+                          }
+                        >
+                          {name}
+                        </Text>
+                      </HStack>
+                    </Pressable>
+                  )
               })}
             </VStack>
           </VStack>
