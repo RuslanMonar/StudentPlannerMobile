@@ -1,22 +1,47 @@
 import { ScrollView, LayoutAnimation, UIManager } from 'react-native';
 import { Expandable } from './Expandable';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import foldersGateway from '../gateways/foldersGateway';
+import { Box } from "native-base";
+import { useDrawerStatus } from '@react-navigation/drawer';
 
-export const ProjectsMenu = () => {
+export const ProjectsMenu = (props) => {
     const [listDataSource, setListDataSource] = useState(CONTENT);
     if (Platform.OS === 'android') {
         UIManager.setLayoutAnimationEnabledExperimental(true);
     }
-    
+
+    const isDrawerOpen = useDrawerStatus();
+
+    useEffect(() => {
+        const fetchData = async () => {
+            var response = await foldersGateway.GetFolders();
+            if (response) {
+                var transformedObject = response.data?.map(obj => ({
+                    isExpanded: false,
+                    category_name: obj.title,
+                    color: obj.color,
+                    id: obj.id,
+                    subcategory: []
+                }));
+                setListDataSource(transformedObject);
+            }
+
+        };
+        fetchData();
+    }, [isDrawerOpen]);
+
     return (
-        <ScrollView>
-            {listDataSource.map((item, key) => (
-                <Expandable
-                    key={key}
-                    item={item}
-                />
-            ))}
-        </ScrollView>
+        <Box height="65%">
+            <ScrollView>
+                {listDataSource.map((item, key) => (
+                    <Expandable
+                        key={key}
+                        item={item}
+                    />
+                ))}
+            </ScrollView>
+        </Box>
     );
 }
 

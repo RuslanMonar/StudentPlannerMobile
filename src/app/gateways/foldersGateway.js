@@ -7,6 +7,12 @@ const CreateFolder = async (title, color) => {
         .then(response => response, error => Promise.reject(ErrorBuilder(error)));
 };
 
+const GetFolders = async () => {
+    const apiInstance = await api();
+    return  apiInstance.get("Folders")
+        .then(response => response, error => Promise.reject(ErrorBuilder(error)));
+};
+
 const ErrorBuilder = (error) => {
     const message =
         (error.response && error.response.data && error.response.data.errors) ||
@@ -18,5 +24,6 @@ const ErrorBuilder = (error) => {
 
 
 export default {
-    CreateFolder
+    CreateFolder,
+    GetFolders
 };

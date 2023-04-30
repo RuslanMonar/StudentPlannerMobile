@@ -61,7 +61,7 @@ export const Expandable = ({ item }) => {
                 </TouchableOpacity>
                 <Box>
                     <View style={{ height: layoutHeight, overflow: 'hidden' }}>
-                        {item.subcategory.map((item, key) => (
+                        {item.subcategory?.map((item, key) => (
                             <TouchableOpacity
                                 key={key}
                                 style={styles.content}
