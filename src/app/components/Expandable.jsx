@@ -46,7 +46,7 @@ export const Expandable = ({ item }) => {
                             <Icon
                                 ml="5px"
                                 size="6"
-                                color='red.500'
+                                color={item.color}
                                 as={<MaterialIcons name='folder' />}
                             />
                             <Text ml={5} style={styles.headerText}>{item.category_name}</Text>
