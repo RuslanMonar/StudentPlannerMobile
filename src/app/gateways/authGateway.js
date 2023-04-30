@@ -1,15 +1,17 @@
 import { api } from '../shared/config/axios';
 
-const SignIn = (email, password) => {
+const SignIn = async (email, password) => {
     let data = { email, password };
-    return api().post("Auth/SignIn", data)
+    const apiInstance = await api();
+    return apiInstance.post("Auth/SignIn", data)
         .then(response => response, error => Promise.reject(ErrorBuilder(error)));
 
 };
 
-const SignUp = (email, password) => (dispatch) => {
+const SignUp = async (email, password) => async (dispatch) => {
     let data = { email, password };
-    return api().post("Auth/SignUp", data)
+    const apiInstance = await api();
+    return apiInstance.post("Auth/SignUp", data)
         .then(response => response, error => Promise.reject(ErrorBuilder(error)));
 };
 

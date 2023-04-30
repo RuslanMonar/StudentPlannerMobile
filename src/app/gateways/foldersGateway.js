@@ -1,8 +1,9 @@
 import { api } from '../shared/config/axios';
 
-const CreateFolder = (title, color) => {
+const CreateFolder = async (title, color) => {
     let data = { title, color };
-    return api().post("Folders", data)
+    const apiInstance = await api();
+    return  apiInstance.post("Folders", data)
         .then(response => response, error => Promise.reject(ErrorBuilder(error)));
 };
 

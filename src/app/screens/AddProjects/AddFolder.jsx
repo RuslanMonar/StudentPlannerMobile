@@ -11,14 +11,14 @@ export const AddFolder = () => {
   const [folderName, setFolderName] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const createFolder = () => {
-    setLoading(true);
-    foldersGateway.CreateFolder(folderName, activeColor)
-      .then(response => {
-        setLoading(false);
-        setIsLoggedIn(true)
-      })
-      .catch(error => setLoading(false));
+  const createFolder = async () => {
+    try {
+      setLoading(true);
+      await foldersGateway.CreateFolder(folderName, activeColor);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+    }
   };
 
   return (
@@ -56,7 +56,7 @@ export const AddFolder = () => {
           ))}
         </Box>
 
-        <Button onPress={() => createFolder()}
+        <Button onPress={createFolder}
           background={AppStyle.yellow}
           rightIcon={<Icon as={Ionicons}
             name="checkmark-circle-outline"
