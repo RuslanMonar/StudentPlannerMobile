@@ -5,7 +5,7 @@ import * as AppStyle from "../../../styles/AppStyle";
 import foldersGateway from '../../gateways/foldersGateway';
 import PopupLoader from './../../components/PopupLoader';
 
-export const AddFolder = () => {
+export const AddFolder = ({ navigation }) => {
   const colors = ['#FF6B6B', '#FFE66D', '#8DD7CF', '#FFD57E', '#B2FFA9', '#FFB347', '#83D0F2', '#FF8FB2', '#AEEEEE', '#FFA07A', '#90EE90', '#FA8072', '#BA55D3', '#FFC0CB', '#FF69B4', '#20B2AA', '#FFD700', '#87CEFA', '#6495ED', '#40E0D0', '#7B68EE', '#9370DB', '#AFEEEE', '#FF7F50', '#3CB371', '#87CEEB', '#FFA500', '#6B8E23', '#00FA9A', '#FF69B4'];
   const [activeColor, setActiveColor] = useState(colors[0]);
   const [folderName, setFolderName] = useState("");
@@ -15,6 +15,8 @@ export const AddFolder = () => {
     try {
       setLoading(true);
       await foldersGateway.CreateFolder(folderName, activeColor);
+      setFolderName("");
+      navigation.goBack();
       setLoading(false);
     } catch (error) {
       setLoading(false);
