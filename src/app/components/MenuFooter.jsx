@@ -18,7 +18,7 @@ export const MenuFooter = (props) => {
         <Box>
             <HStack bg={AppStyle.yellow} alignItems="center" safeAreaBottom shadow={6}>
                 <Pressable cursor="pointer" py="3" flex={1}
-                    onPress={() => props.navigation.navigate("AddProjectsNavigator", { screen: "AddFolder" })}>
+                    onPress={() => props.navigation.navigate("AddProjectsNavigator", { screen: "Add Folder" })}>
                     <Center display="flex" flexDirection="row" alignItems="center" alignContent="center" >
                         <Icon mb="1" pt="2px" as={<MaterialCommunityIcons name='folder-multiple-plus' />} color="black" size="20px" />
                         <Text ml="10px" color="black" fontSize="15">
@@ -27,7 +27,8 @@ export const MenuFooter = (props) => {
                     </Center>
                 </Pressable>
 
-                <Pressable cursor="pointer" py="3" flex={1} onPress={() => setSelected(0)}>
+                <Pressable cursor="pointer" py="3" flex={1}
+                    onPress={() => props.navigation.navigate("AddProjectsNavigator", { screen: "Add Project" })}>
                     <Center display="flex" flexDirection="row" alignItems="center" alignContent="center" >
                         <Icon mb="1" pt="2px" as={<MaterialCommunityIcons name='plus' />} color="black" size="20px" />
                         <Text ml="10px" color="black" fontSize="15">
