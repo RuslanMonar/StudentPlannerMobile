@@ -2,7 +2,7 @@ import { ScrollView, LayoutAnimation, UIManager } from 'react-native';
 import { Expandable } from './Expandable';
 import { useState, useEffect } from 'react';
 import foldersGateway from '../gateways/foldersGateway';
-import { Box } from "native-base";
+import {Box} from "native-base";
 import { useDrawerStatus } from '@react-navigation/drawer';
 
 export const ProjectsMenu = (props) => {
@@ -22,7 +22,11 @@ export const ProjectsMenu = (props) => {
                     category_name: obj.title,
                     color: obj.color,
                     id: obj.id,
-                    subcategory: []
+                    subcategory: obj.projects?.map(project => ({
+                        id: project.id,
+                        val: project.title,
+                        color: project.color
+                    }))
                 }));
                 setListDataSource(transformedObject);
             }

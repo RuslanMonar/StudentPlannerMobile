@@ -1,8 +1,9 @@
 import { api } from '../shared/config/axios';
 
-const CreateFolder = (title, color) => {
-    let data = { title, color };
-    return api().post("Folders", data)
+const CreateProject = async (title, color, folderId) => {
+    let data = { title, color, folderId };
+    const apiInstance = await api();
+    return apiInstance.post("Projects", data)
         .then(response => response, error => Promise.reject(ErrorBuilder(error)));
 };
 
@@ -17,5 +18,5 @@ const ErrorBuilder = (error) => {
 
 
 export default {
-    CreateFolder
+    CreateProject
 };
