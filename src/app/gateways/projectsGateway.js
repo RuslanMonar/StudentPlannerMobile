@@ -12,7 +12,7 @@ const ErrorBuilder = (error) => {
         (error.response && error.response.data && error.response.data.errors) ||
         error.message ||
         error.toString();
-    const code = error.response.status;
+    const code = error.response?.status;
     return { message, code };
 };
 

@@ -26,28 +26,30 @@ export const AddProject = ({ navigation }) => {
         }
     };
 
-    useEffect(() => {
-        const fetchData = async () => {
-            var response = await foldersGateway.GetFolders();
-            if (response) {
-                var transformedObject = response.data?.map(obj => ({
-                    isExpanded: false,
-                    category_name: obj.title,
-                    color: obj.color,
-                    id: obj.id,
-                    subcategory: obj.projects?.map(project => ({
-                        id: project.id,
-                        val: project.title,
-                        color: project.color
-                    }))
-                }));
-                console.log(transformedObject);
-                setListDataSource(transformedObject);
-            }
+    const fetchData = async () => {
+        var response = await foldersGateway.GetFolders();
+        if (response) {
+            var transformedObject = response.data?.map(obj => ({
+                isExpanded: false,
+                category_name: obj.title,
+                color: obj.color,
+                id: obj.id,
+                subcategory: obj.projects?.map(project => ({
+                    id: project.id,
+                    val: project.title,
+                    color: project.color
+                }))
+            }));
+            console.log(transformedObject);
+            setListDataSource(transformedObject);
+        }
 
-        };
+    };
+
+    function handleOpen() {
         fetchData();
-    }, [navigation]);
+    }
+
 
     return (
         <Box bg="gray.100" height="100%" width="100%">
@@ -77,17 +79,18 @@ export const AddProject = ({ navigation }) => {
                     </InputGroup>
                 </Box>
 
-                <Select bordered={false} bg="white" selectedValue={selectedFolder} minWidth="200" accessibilityLabel="Choose Service" placeholder="Choose Service" _selectedItem={{
-                    bg: "transparent",
-                    endIcon: <CheckIcon size="5" renderLeftIcon={() => <MaterialIcons name='folder' size={4} />} />
-                }} mt={1} onValueChange={itemValue => setSelectedFolder(itemValue)}>
+                <Select onOpen={handleOpen} bordered={false} bg="white" selectedValue={selectedFolder} minWidth="200"
+                    accessibilityLabel="Choose Folder" placeholder="Choose Service" _selectedItem={{
+                        bg: "transparent",
+                        endIcon: <CheckIcon size="5" renderLeftIcon={() => <MaterialIcons name='folder' size={4} />} />
+                    }} mt={1} onValueChange={itemValue => setSelectedFolder(itemValue)}>
                     {listDataSource.map((item, key) => (
                         <Select.Item leftIcon={<Icon
                             ml="5px"
                             size="6"
                             color={item.color}
                             as={<MaterialIcons name='folder' />}
-                        />}  key={key} label={item.category_name} value={item.id} />
+                        />} key={key} label={item.category_name} value={item.id} />
                     ))}
                 </Select>
 
