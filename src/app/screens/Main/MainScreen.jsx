@@ -1,8 +1,10 @@
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Input, InputGroup, InputLeftAddon, Box, VStack, Icon, Text } from "native-base";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import { useState, useEffect, useRef } from 'react';
 import { View, KeyboardAvoidingView, StyleSheet, Keyboard, LayoutAnimation, TouchableWithoutFeedback } from 'react-native';
+import { CreateTaskSidebar } from "../../components/Tasks/CreateTaskSidebar";
+import { TomatosSlider } from "../../components/Tasks/TomatosSlider";
 
 const MainScreen = ({ navigation }) => {
     const [taskName, setTaskName] = useState("");
@@ -50,7 +52,7 @@ const MainScreen = ({ navigation }) => {
                                     <InputLeftAddon style={{ borderWidth: 0 }} bg="white" children={
                                         <Icon
                                             size="6"
-                                            color="black"
+                                            color="gray.400"
                                             as={<MaterialCommunityIcons name='plus' />}
                                         />}
                                     />
@@ -74,49 +76,12 @@ const MainScreen = ({ navigation }) => {
                             </Box>
                         </VStack>
                     </Box>
-                    <KeyboardAvoidingView
-                        style={styles.container}
-                        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-                        keyboardVerticalOffset={100}
-                    >
-                        <View style={styles.inner}>
-                            {isInputActive && (
-                                <View style={styles.fixedView}>
-                                    <Box bg="red.500" width="100%" height="100%">
-                                        <Text>Hello world</Text>
-                                    </Box>
-                                </View>
-                            )}
-
-                        </View>
-                    </KeyboardAvoidingView>
+                    <CreateTaskSidebar isInputActive={isInputActive} />
                 </SafeAreaView>
             </TouchableWithoutFeedback>
         </Box>
     );
 }
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-    inner: {
-        flex: 1,
-        justifyContent: 'flex-end',
-    },
-    input: {
-        height: 50,
-        padding: 10,
-        margin: 10,
-        borderWidth: 1,
-        borderRadius: 5,
-    },
-    fixedView: {
-        height: 50,
-        backgroundColor: 'gray',
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-});
 
 export default MainScreen;
