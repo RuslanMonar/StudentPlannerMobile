@@ -1,10 +1,9 @@
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Input, InputGroup, InputLeftAddon, Box, VStack, Icon, Text } from "native-base";
-import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
+import { Input, InputGroup, InputLeftAddon, Box, VStack, Icon, Pressable } from "native-base";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useState, useEffect, useRef } from 'react';
-import { View, KeyboardAvoidingView, StyleSheet, Keyboard, LayoutAnimation, TouchableWithoutFeedback } from 'react-native';
+import { Keyboard, LayoutAnimation } from 'react-native';
 import { CreateTaskSidebar } from "../../components/Tasks/CreateTaskSidebar";
-import { TomatosSlider } from "../../components/Tasks/TomatosSlider";
 
 const MainScreen = ({ navigation }) => {
     const [taskName, setTaskName] = useState("");
@@ -36,14 +35,14 @@ const MainScreen = ({ navigation }) => {
         setIsInputActive(false);
     };
 
-    const handlePressOutsideInput = () => {
+    const handlePressOutsideInput = (event) => {
         inputRef.current?.blur();
         Keyboard.dismiss();
     };
 
     return (
         <Box w="100%" h="100%">
-            <TouchableWithoutFeedback onPress={handlePressOutsideInput}>
+            <Pressable onPress={handlePressOutsideInput}>
                 <SafeAreaView>
                     <Box bg="gray.100" height="100%" width="100%">
                         <VStack space={4} w="100%" mx="auto">
@@ -76,9 +75,11 @@ const MainScreen = ({ navigation }) => {
                             </Box>
                         </VStack>
                     </Box>
-                    <CreateTaskSidebar isInputActive={isInputActive} />
+                    <Pressable>
+                        <CreateTaskSidebar isInputActive={isInputActive} />
+                    </Pressable>
                 </SafeAreaView>
-            </TouchableWithoutFeedback>
+            </Pressable>
         </Box>
     );
 }

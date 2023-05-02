@@ -21,7 +21,7 @@ export const TomatosSlider = () => {
     return (
 
         <View style={{ flex: 1 }}>
-            <View style={{ marginVertical: 100 }}>
+            <View >
                 <Carousel
                     key={`${loop}`}
                     ref={r}

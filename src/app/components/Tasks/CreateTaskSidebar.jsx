@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end',
     },
     fixedView: {
-        height: 400,
+        height: 200,
         justifyContent: 'center',
         alignItems: 'center',
     },
