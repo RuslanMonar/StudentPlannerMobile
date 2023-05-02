@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useDispatch } from "react-redux";
 import { TouchableOpacity } from 'react-native';
 import { WarningOutlineIcon, Box, Heading, VStack, FormControl, Input, Image, Button, Center, Text } from "native-base";
@@ -7,13 +7,15 @@ import * as AppStyle from "../../../styles/AppStyle";
 import * as Validation from '../../utils/validation';
 import PopupLoader from './../../components/PopupLoader';
 import authService from '../../services/authService';
+import { AuthContext } from '../../context/AuthContext';
 
 const SignInScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [isValidEmail, setIsValidEmail] = useState(true);
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  
+  const { setIsLoggedIn } = useContext(AuthContext);
+
   const dispatch = useDispatch();
 
   const handleEmailChange = (e) => setEmail(e.nativeEvent.text);
@@ -27,7 +29,10 @@ const SignInScreen = ({ navigation }) => {
       setLoading(true);
 
       dispatch(authService.SignIn(email, password))
-        .then(response => setLoading(false))
+        .then(response => {
+          setLoading(false);
+          setIsLoggedIn(true)
+        })
         .catch(error => setLoading(false));
     }
   }

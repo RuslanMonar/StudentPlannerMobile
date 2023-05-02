@@ -1,17 +1,15 @@
 import { api } from '../shared/config/axios';
 
-const SignIn = async (email, password) => {
-    let data = { email, password };
+const CreateFolder = async (title, color) => {
+    let data = { title, color };
     const apiInstance = await api();
-    return apiInstance.post("Auth/SignIn", data)
+    return  apiInstance.post("Folders", data)
         .then(response => response, error => Promise.reject(ErrorBuilder(error)));
-
 };
 
-const SignUp = async (email, password) => async (dispatch) => {
-    let data = { email, password };
+const GetFolders = async () => {
     const apiInstance = await api();
-    return apiInstance.post("Auth/SignUp", data)
+    return  apiInstance.get("Folders")
         .then(response => response, error => Promise.reject(ErrorBuilder(error)));
 };
 
@@ -20,12 +18,12 @@ const ErrorBuilder = (error) => {
         (error.response && error.response.data && error.response.data.errors) ||
         error.message ||
         error.toString();
-    const code = error.response.status;
+    const code = error.response?.status;
     return { message, code };
 };
 
 
 export default {
-    SignUp,
-    SignIn
+    CreateFolder,
+    GetFolders
 };
