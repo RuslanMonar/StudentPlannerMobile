@@ -6,12 +6,14 @@ import { View, KeyboardAvoidingView, StyleSheet, Pressable } from 'react-native'
 import { TomatosSlider } from './TomatosSlider';
 import { DatePicker } from '../DatePicker';
 import { PriorityPicker } from './PriorityPicker';
+import { ProjectPicker } from './ProjectPicker';
 
 
 export const CreateTaskSidebar = ({ isInputActive }) => {
     const [vieMoreTimers, setViewMoreTimers] = useState(false);
     const [showDateModal, setShowDateModal] = useState(false);
     const [showPriorityPickerModal, setShowPriorityPickerModal] = useState(false);
+    const [showProjectPickerModal, setShowProjectPickerModal] = useState(false);
     const [selectedStartDate, setSelectedStartDate] = useState(null);
     const [selectedPriority, setSelectedPriority] = useState("gray");
     const [clickedIcons, setClickedIcons] = useState([]);
@@ -49,6 +51,9 @@ export const CreateTaskSidebar = ({ isInputActive }) => {
     const handleDisable = (index) => {
         const newClickedIcons = clickedIcons.filter((clickedIndex) => clickedIndex <= index);
         setClickedIcons(newClickedIcons);
+        if (index == 0) {
+            setClickedIcons([]);
+        }
     };
 
     return (
@@ -116,7 +121,7 @@ export const CreateTaskSidebar = ({ isInputActive }) => {
                                         <Text ml={1} mt={2}>Priority</Text>
                                     </Box>
                                 </Pressable>
-                                <Pressable>
+                                <Pressable onPress={() => setShowProjectPickerModal(true)}>
                                     <Box alignItems="center" flexDirection="row">
                                         <Icon
                                             mt={2}
@@ -138,20 +143,25 @@ export const CreateTaskSidebar = ({ isInputActive }) => {
                                 </Pressable>
                             </Box>
                         </Box>
+
+                        <DatePicker
+                            showModal={showDateModal}
+                            setShowModal={setShowDateModal}
+                            selectedStartDate={selectedStartDate}
+                            setSelectedStartDate={setSelectedStartDate} />
+
+                        <PriorityPicker
+                            showModal={showPriorityPickerModal}
+                            setShowModal={setShowPriorityPickerModal}
+                            selectedPriority={selectedPriority}
+                            setSelectedPriority={setSelectedPriority} />
+
+                        <ProjectPicker
+                            showModal={showProjectPickerModal}
+                            setShowModal={setShowProjectPickerModal} />
                     </View>
+
                 )}
-
-                <DatePicker
-                    showModal={showDateModal}
-                    setShowModal={setShowDateModal}
-                    selectedStartDate={selectedStartDate}
-                    setSelectedStartDate={setSelectedStartDate} />
-
-                <PriorityPicker
-                    showModal={showPriorityPickerModal}
-                    setShowModal={setShowPriorityPickerModal}
-                    selectedPriority={selectedPriority}
-                    setSelectedPriority={setSelectedPriority} />
             </View>
         </KeyboardAvoidingView>
     )

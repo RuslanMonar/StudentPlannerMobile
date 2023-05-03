@@ -7,6 +7,12 @@ const CreateProject = async (title, color, folderId) => {
         .then(response => response, error => Promise.reject(ErrorBuilder(error)));
 };
 
+const GetProjects = async () => {
+    const apiInstance = await api();
+    return apiInstance.get("Projects")
+        .then(response => response, error => Promise.reject(ErrorBuilder(error)));
+};
+
 const ErrorBuilder = (error) => {
     const message =
         (error.response && error.response.data && error.response.data.errors) ||
@@ -18,5 +24,6 @@ const ErrorBuilder = (error) => {
 
 
 export default {
-    CreateProject
+    CreateProject,
+    GetProjects
 };
