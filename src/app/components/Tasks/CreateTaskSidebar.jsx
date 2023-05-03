@@ -1,12 +1,22 @@
 import React from 'react'
-import { Box, Icon, Text } from "native-base";
-import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
-import { useState, useEffect, useRef } from 'react';
-import { View, KeyboardAvoidingView, StyleSheet} from 'react-native';
+import { Box, Icon, Text, Divider } from "native-base";
+import { MaterialCommunityIcons, MaterialIcons, Ionicons } from "@expo/vector-icons";
+import { useState, useEffect } from 'react';
+import { View, KeyboardAvoidingView, StyleSheet, Pressable } from 'react-native';
 import { TomatosSlider } from './TomatosSlider';
+import { DatePicker } from '../DatePicker';
 
 
-export const CreateTaskSidebar = ({isInputActive}) => {
+export const CreateTaskSidebar = ({ isInputActive }) => {
+    const [vieMoreTimers, setViewMoreTimers] = useState(false);
+    const [showModal, setShowModal] = useState(false);
+    const [selectedStartDate, setSelectedStartDate] = useState(null);
+
+    useEffect(() => {
+        setViewMoreTimers(false);
+        setSelectedStartDate(null);
+    }, [isInputActive]);
+
     return (
         <KeyboardAvoidingView
             style={styles.container}
@@ -20,30 +30,51 @@ export const CreateTaskSidebar = ({isInputActive}) => {
                             bg="white" width="100%" height="100%"
                             borderTopLeftRadius="xl" borderTopRightRadius="xl">
                             <Text color="gray.200">Expected time</Text>
-                            <Box width="100%" flexDirection="row" justifyContent="space-around">
-                                {Array.from({ length: 5 }, (_, index) => (
+                            {!vieMoreTimers ? (
+                                <Box width="100%" flexDirection="row" justifyContent="space-around">
+                                    {Array.from({ length: 5 }, (_, index) => (
+                                        <Icon
+                                            mt={2}
+                                            key={index}
+                                            size="7"
+                                            color="gray.200"
+                                            as={<MaterialCommunityIcons name='timer' />}
+                                        />
+                                    ))}
+                                    <Pressable onPress={() => setViewMoreTimers(true)}>
+                                        <Icon
+                                            mt={2}
+                                            size="7"
+                                            color="gray.200"
+                                            as={<MaterialIcons name='keyboard-arrow-right' />}
+                                        />
+                                    </Pressable>
+                                </Box>
+                            ) : < TomatosSlider />}
+
+                            <Divider mt="3" width="100%" />
+                            
+                            <Box pl={5} alignItems="flex-start" width="100%" height="100%">
+                                <Pressable onPress={() => setShowModal(true)}>
                                     <Icon
                                         mt={2}
-                                        key={index}
-                                        size="7"
-                                        color="gray.200"
-                                        as={<MaterialCommunityIcons name='timer' />}
+                                        size="6"
+                                        color="purple.500"
+                                        as={<Ionicons name='calendar' />}
                                     />
-                                ))}
-                                <Icon
-                                    mt={2}
-                                    size="7"
-                                    color="gray.200"
-                                    as={<MaterialIcons name='keyboard-arrow-right' />}
-                                />
+                                </Pressable>
                             </Box>
-                            <TomatosSlider/>
                         </Box>
                     </View>
                 )}
+                <DatePicker
+                    showModal={showModal}
+                    setShowModal={setShowModal}
+                    selectedStartDate={selectedStartDate}
+                    setSelectedStartDate={setSelectedStartDate} />
             </View>
-        </KeyboardAvoidingView> 
-  )
+        </KeyboardAvoidingView>
+    )
 }
 
 
@@ -56,7 +87,7 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end',
     },
     fixedView: {
-        height: 200,
+        height: 150,
         justifyContent: 'center',
         alignItems: 'center',
     },

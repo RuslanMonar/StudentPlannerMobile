@@ -19,8 +19,7 @@ export const TomatosSlider = () => {
     const [loop, setLoop] = React.useState(false);
 
     return (
-
-        <View style={{ flex: 1 }}>
+        <View style={{ flex: 1, minHeight:'35%', width: '90%' }}>
             <View >
                 <Carousel
                     key={`${loop}`}
@@ -37,6 +36,7 @@ export const TomatosSlider = () => {
                     width={PAGE_WIDTH}
                     height={PAGE_HEIGHT}
                     data={DATA}
+                    defaultIndex={5}
                     renderItem={({ item, animationValue }) => {
                         return (
                             <Item
