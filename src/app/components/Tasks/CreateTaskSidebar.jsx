@@ -22,6 +22,8 @@ export const CreateTaskSidebar = ({ isInputActive }) => {
     useEffect(() => {
         setViewMoreTimers(false);
         setSelectedStartDate(null);
+        setSelectedPriority("gray");
+        setSelectedProject(null);
     }, [isInputActive]);
 
     const getPriority = () => {
@@ -125,9 +127,9 @@ export const CreateTaskSidebar = ({ isInputActive }) => {
                                 <Pressable onPress={() => setShowProjectPickerModal(true)}>
                                     {selectedProject ?
                                         (
-                                            <Box alignItems="center" flexDirection="row">
-                                                <Avatar ml={3} my={4} bg={selectedProject?.color} size="15px" />
-                                                <Text ml={1} mt={2}>{selectedProject?.title}</Text>
+                                            <Box mt={3} alignItems="center" flexDirection="row">
+                                                <Avatar ml={3} bg={selectedProject?.color} size="15px" />
+                                                <Text ml={1} >{selectedProject?.title}</Text>
                                             </Box>
                                         ) :
                                         <Box alignItems="center" flexDirection="row">

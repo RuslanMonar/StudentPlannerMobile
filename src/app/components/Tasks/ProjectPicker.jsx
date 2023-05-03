@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box, Avatar, Text, Center, Modal , Pressable} from "native-base";
+import { Box, Avatar, Text, Center, Modal, Pressable } from "native-base";
 import projectsGateway from "../../gateways/projectsGateway";
 
 export const ProjectPicker = ({ showModal, setShowModal, selectedProject, setSelectedProject }) => {
@@ -27,7 +27,7 @@ export const ProjectPicker = ({ showModal, setShowModal, selectedProject, setSel
                     <Modal.Body>
                         <Box>
                             {projects.map((item, index) => (
-                                <Pressable onPress={() => setSelectedProject(item)}>
+                                <Pressable onPress={() => { setSelectedProject(item); setShowModal(false); }}>
                                     <Box flexDirection="row" alignItems="center">
                                         <Avatar ml={3} my={4} bg={item.color} key={index} size="15px" />
                                         <Text ml={5}>{item.title}</Text>
