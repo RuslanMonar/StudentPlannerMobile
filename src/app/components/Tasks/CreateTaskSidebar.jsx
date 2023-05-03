@@ -53,15 +53,49 @@ export const CreateTaskSidebar = ({ isInputActive }) => {
                             ) : < TomatosSlider />}
 
                             <Divider mt="3" width="100%" />
-                            
-                            <Box pl={5} alignItems="flex-start" width="100%" height="100%">
+
+                            <Box justifyContent="space-around" alignItems="flex-start" flexDirection="row" width="100%" height="100%">
                                 <Pressable onPress={() => setShowModal(true)}>
-                                    <Icon
-                                        mt={2}
-                                        size="6"
-                                        color="purple.500"
-                                        as={<Ionicons name='calendar' />}
-                                    />
+                                    <Box alignItems="center" flexDirection="row">
+                                        <Icon
+                                            mt={2}
+                                            size="6"
+                                            color="purple.500"
+                                            as={<Ionicons name='calendar' />}
+                                        />
+                                        <Text ml={1} mt={2}>Date</Text>
+                                    </Box>
+                                </Pressable>
+                                <Pressable>
+                                    <Box alignItems="center" flexDirection="row">
+                                        <Icon
+                                            mt={2}
+                                            size="6"
+                                            color="gray.400"
+                                            as={<Ionicons name='flag' />}
+                                        />
+                                        <Text ml={1} mt={2}>Priority</Text>
+                                    </Box>
+                                </Pressable>
+                                <Pressable>
+                                    <Box alignItems="center" flexDirection="row">
+                                        <Icon
+                                            mt={2}
+                                            size="6"
+                                            color="blue.400"
+                                            as={<Ionicons name='archive' />}
+                                        />
+                                        <Text ml={1} mt={2}>Project</Text>
+                                    </Box>
+                                </Pressable>
+                                <Pressable>
+                                    <Box p={0.2} mt={2} rounded style={{ borderRadius: 50 }} bg="green.400" alignItems="center" flexDirection="row">
+                                        <Icon
+                                            size="6"
+                                            color="black"
+                                            as={<Ionicons name='checkmark' />}
+                                        />
+                                    </Box>
                                 </Pressable>
                             </Box>
                         </Box>
@@ -87,7 +121,7 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end',
     },
     fixedView: {
-        height: 150,
+        height: 120,
         justifyContent: 'center',
         alignItems: 'center',
     },
