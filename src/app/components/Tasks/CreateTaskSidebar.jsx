@@ -24,6 +24,7 @@ export const CreateTaskSidebar = ({ isInputActive }) => {
         setSelectedStartDate(null);
         setSelectedPriority("gray");
         setSelectedProject(null);
+        setClickedIcons([]);
     }, [isInputActive]);
 
     const getPriority = () => {
