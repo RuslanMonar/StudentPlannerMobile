@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Icon, Text, Divider } from "native-base";
+import { Box, Icon, Text, Divider, Avatar } from "native-base";
 import { MaterialCommunityIcons, MaterialIcons, Ionicons } from "@expo/vector-icons";
 import { useState, useEffect } from 'react';
 import { View, KeyboardAvoidingView, StyleSheet, Pressable } from 'react-native';
@@ -16,6 +16,7 @@ export const CreateTaskSidebar = ({ isInputActive }) => {
     const [showProjectPickerModal, setShowProjectPickerModal] = useState(false);
     const [selectedStartDate, setSelectedStartDate] = useState(null);
     const [selectedPriority, setSelectedPriority] = useState("gray");
+    const [selectedProject, setSelectedProject] = useState(null);
     const [clickedIcons, setClickedIcons] = useState([]);
 
     useEffect(() => {
@@ -122,15 +123,23 @@ export const CreateTaskSidebar = ({ isInputActive }) => {
                                     </Box>
                                 </Pressable>
                                 <Pressable onPress={() => setShowProjectPickerModal(true)}>
-                                    <Box alignItems="center" flexDirection="row">
-                                        <Icon
-                                            mt={2}
-                                            size="6"
-                                            color="blue.400"
-                                            as={<Ionicons name='archive' />}
-                                        />
-                                        <Text ml={1} mt={2}>Project</Text>
-                                    </Box>
+                                    {selectedProject ?
+                                        (
+                                            <Box alignItems="center" flexDirection="row">
+                                                <Avatar ml={3} my={4} bg={selectedProject?.color} size="15px" />
+                                                <Text ml={1} mt={2}>{selectedProject?.title}</Text>
+                                            </Box>
+                                        ) :
+                                        <Box alignItems="center" flexDirection="row">
+                                            <Icon
+                                                mt={2}
+                                                size="6"
+                                                color="blue.400"
+                                                as={<Ionicons name='archive' />}
+                                            />
+                                            <Text ml={1} mt={2}>Project</Text>
+                                        </Box>}
+
                                 </Pressable>
                                 <Pressable>
                                     <Box p={0.2} mt={2} rounded style={{ borderRadius: 50 }} bg="green.500" alignItems="center" flexDirection="row">
@@ -158,7 +167,9 @@ export const CreateTaskSidebar = ({ isInputActive }) => {
 
                         <ProjectPicker
                             showModal={showProjectPickerModal}
-                            setShowModal={setShowProjectPickerModal} />
+                            setShowModal={setShowProjectPickerModal}
+                            selectedProject={selectedProject}
+                            setSelectedProject={setSelectedProject} />
                     </View>
 
                 )}
