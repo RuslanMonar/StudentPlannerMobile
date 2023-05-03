@@ -5,17 +5,51 @@ import { useState, useEffect } from 'react';
 import { View, KeyboardAvoidingView, StyleSheet, Pressable } from 'react-native';
 import { TomatosSlider } from './TomatosSlider';
 import { DatePicker } from '../DatePicker';
+import { PriorityPicker } from './PriorityPicker';
 
 
 export const CreateTaskSidebar = ({ isInputActive }) => {
     const [vieMoreTimers, setViewMoreTimers] = useState(false);
-    const [showModal, setShowModal] = useState(false);
+    const [showDateModal, setShowDateModal] = useState(false);
+    const [showPriorityPickerModal, setShowPriorityPickerModal] = useState(false);
     const [selectedStartDate, setSelectedStartDate] = useState(null);
+    const [selectedPriority, setSelectedPriority] = useState("gray");
+    const [clickedIcons, setClickedIcons] = useState([]);
 
     useEffect(() => {
         setViewMoreTimers(false);
         setSelectedStartDate(null);
     }, [isInputActive]);
+
+    const getPriority = () => {
+        if (selectedPriority == 'red') {
+            return "error.600"
+        }
+        if (selectedPriority == 'yellow') {
+            return "warning.400"
+        }
+        if (selectedPriority == 'green') {
+            return "success.500"
+        }
+        if (selectedPriority == 'gray') {
+            return "gray.400"
+        }
+    }
+
+    const handleClick = (index) => {
+        const newClickedIcons = [...clickedIcons];
+        for (let i = 0; i <= index; i++) {
+            if (!newClickedIcons.includes(i)) {
+                newClickedIcons.push(i);
+            }
+        }
+        setClickedIcons(newClickedIcons);
+    };
+
+    const handleDisable = (index) => {
+        const newClickedIcons = clickedIcons.filter((clickedIndex) => clickedIndex <= index);
+        setClickedIcons(newClickedIcons);
+    };
 
     return (
         <KeyboardAvoidingView
@@ -26,20 +60,25 @@ export const CreateTaskSidebar = ({ isInputActive }) => {
             <View style={styles.inner}>
                 {isInputActive && (
                     <View style={styles.fixedView}>
-                        <Box alignItems="center" borderColor="yellow.500" borderWidth="2"
+                        <Box alignItems="center"
                             bg="white" width="100%" height="100%"
                             borderTopLeftRadius="xl" borderTopRightRadius="xl">
                             <Text color="gray.200">Expected time</Text>
                             {!vieMoreTimers ? (
                                 <Box width="100%" flexDirection="row" justifyContent="space-around">
                                     {Array.from({ length: 5 }, (_, index) => (
-                                        <Icon
-                                            mt={2}
+                                        <Pressable
                                             key={index}
-                                            size="7"
-                                            color="gray.200"
-                                            as={<MaterialCommunityIcons name='timer' />}
-                                        />
+                                            onPress={() => handleClick(index)}
+                                            onLongPress={() => handleDisable(index)}
+                                        >
+                                            <Icon
+                                                mt={2}
+                                                size="7"
+                                                color={clickedIcons.includes(index) ? 'red.500' : 'gray.200'}
+                                                as={<MaterialCommunityIcons name="timer" />}
+                                            />
+                                        </Pressable>
                                     ))}
                                     <Pressable onPress={() => setViewMoreTimers(true)}>
                                         <Icon
@@ -55,7 +94,7 @@ export const CreateTaskSidebar = ({ isInputActive }) => {
                             <Divider mt="3" width="100%" />
 
                             <Box justifyContent="space-around" alignItems="flex-start" flexDirection="row" width="100%" height="100%">
-                                <Pressable onPress={() => setShowModal(true)}>
+                                <Pressable onPress={() => setShowDateModal(true)}>
                                     <Box alignItems="center" flexDirection="row">
                                         <Icon
                                             mt={2}
@@ -66,12 +105,12 @@ export const CreateTaskSidebar = ({ isInputActive }) => {
                                         <Text ml={1} mt={2}>Date</Text>
                                     </Box>
                                 </Pressable>
-                                <Pressable>
+                                <Pressable onPress={() => setShowPriorityPickerModal(true)}>
                                     <Box alignItems="center" flexDirection="row">
                                         <Icon
                                             mt={2}
                                             size="6"
-                                            color="gray.400"
+                                            color={getPriority()}
                                             as={<Ionicons name='flag' />}
                                         />
                                         <Text ml={1} mt={2}>Priority</Text>
@@ -89,10 +128,10 @@ export const CreateTaskSidebar = ({ isInputActive }) => {
                                     </Box>
                                 </Pressable>
                                 <Pressable>
-                                    <Box p={0.2} mt={2} rounded style={{ borderRadius: 50 }} bg="green.400" alignItems="center" flexDirection="row">
+                                    <Box p={0.2} mt={2} rounded style={{ borderRadius: 50 }} bg="green.500" alignItems="center" flexDirection="row">
                                         <Icon
                                             size="6"
-                                            color="black"
+                                            color="white"
                                             as={<Ionicons name='checkmark' />}
                                         />
                                     </Box>
@@ -101,16 +140,22 @@ export const CreateTaskSidebar = ({ isInputActive }) => {
                         </Box>
                     </View>
                 )}
+
                 <DatePicker
-                    showModal={showModal}
-                    setShowModal={setShowModal}
+                    showModal={showDateModal}
+                    setShowModal={setShowDateModal}
                     selectedStartDate={selectedStartDate}
                     setSelectedStartDate={setSelectedStartDate} />
+
+                <PriorityPicker
+                    showModal={showPriorityPickerModal}
+                    setShowModal={setShowPriorityPickerModal}
+                    selectedPriority={selectedPriority}
+                    setSelectedPriority={setSelectedPriority} />
             </View>
         </KeyboardAvoidingView>
     )
 }
-
 
 const styles = StyleSheet.create({
     container: {
