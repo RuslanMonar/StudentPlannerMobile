@@ -27,7 +27,7 @@ export const ProjectPicker = ({ showModal, setShowModal, selectedProject, setSel
                     <Modal.Body>
                         <Box>
                             {projects.map((item, index) => (
-                                <Pressable onPress={() => { setSelectedProject(item); setShowModal(false); }}>
+                                <Pressable key={index} onPress={() => { setSelectedProject(item); setShowModal(false); }}>
                                     <Box flexDirection="row" alignItems="center">
                                         <Avatar ml={3} my={4} bg={item.color} key={index} size="15px" />
                                         <Text ml={5}>{item.title}</Text>

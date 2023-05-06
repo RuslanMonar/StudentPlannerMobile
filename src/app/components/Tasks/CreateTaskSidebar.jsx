@@ -7,9 +7,10 @@ import { TomatosSlider } from './TomatosSlider';
 import { DatePicker } from '../DatePicker';
 import { PriorityPicker } from './PriorityPicker';
 import { ProjectPicker } from './ProjectPicker';
+import tasksGateway from '../../gateways/tasksGateway';
 
 
-export const CreateTaskSidebar = ({ isInputActive }) => {
+export const CreateTaskSidebar = ({ isInputActive, taskName, setLoading, setTaskName, getTasksAsync }) => {
     const [vieMoreTimers, setViewMoreTimers] = useState(false);
     const [showDateModal, setShowDateModal] = useState(false);
     const [showPriorityPickerModal, setShowPriorityPickerModal] = useState(false);
@@ -18,6 +19,33 @@ export const CreateTaskSidebar = ({ isInputActive }) => {
     const [selectedPriority, setSelectedPriority] = useState("gray");
     const [selectedProject, setSelectedProject] = useState(null);
     const [clickedIcons, setClickedIcons] = useState([]);
+    
+
+    const createTaskAsync = async () => {
+        try {
+            setLoading(true);
+            var data = {
+                date: selectedStartDate,
+                flag: selectedPriority,
+                projectId: selectedProject.id,
+                title: taskName,
+                tomatoCount : clickedIcons.length > 0 ? clickedIcons[clickedIcons.length - 1] + 1: 0
+            };
+            await tasksGateway.CreateTask(data);
+
+            setViewMoreTimers(false);
+            setSelectedStartDate(null);
+            setSelectedPriority("gray");
+            setSelectedProject(null);
+            setClickedIcons([]);
+            setTaskName("");
+            setLoading(false);
+            getTasksAsync();
+        } catch (error) {
+            setLoading(false);
+        }
+    };
+
 
     useEffect(() => {
         setViewMoreTimers(false);
@@ -25,6 +53,7 @@ export const CreateTaskSidebar = ({ isInputActive }) => {
         setSelectedPriority("gray");
         setSelectedProject(null);
         setClickedIcons([]);
+        setTaskName("");
     }, [isInputActive]);
 
     const getPriority = () => {
@@ -89,7 +118,7 @@ export const CreateTaskSidebar = ({ isInputActive }) => {
                                             />
                                         </Pressable>
                                     ))}
-                                    <Pressable onPress={() => setViewMoreTimers(true)}>
+                                    <Pressable onPress={() => { setViewMoreTimers(true);  setClickedIcons([]);}}>
                                         <Icon
                                             mt={2}
                                             size="7"
@@ -98,7 +127,7 @@ export const CreateTaskSidebar = ({ isInputActive }) => {
                                         />
                                     </Pressable>
                                 </Box>
-                            ) : < TomatosSlider />}
+                            ) : < TomatosSlider handleClick={handleClick} />}
 
                             <Divider mt="3" width="100%" />
 
@@ -144,7 +173,7 @@ export const CreateTaskSidebar = ({ isInputActive }) => {
                                         </Box>}
 
                                 </Pressable>
-                                <Pressable>
+                                <Pressable onPress={createTaskAsync}>
                                     <Box p={0.2} mt={2} rounded style={{ borderRadius: 50 }} bg="green.500" alignItems="center" flexDirection="row">
                                         <Icon
                                             size="6"
@@ -154,6 +183,7 @@ export const CreateTaskSidebar = ({ isInputActive }) => {
                                     </Box>
                                 </Pressable>
                             </Box>
+                            
                         </Box>
 
                         <DatePicker

@@ -14,14 +14,15 @@ const PAGE_WIDTH = 60;
 const PAGE_HEIGHT = 40;
 const DATA = Array.from({ length: 20 }, (_, i) => i + 1);
 
-export const TomatosSlider = () => {
+export const TomatosSlider = ({handleClick}) => {
     const r = React.useRef(null);
     const [loop, setLoop] = React.useState(false);
 
     return (
-        <View style={{ flex: 1, minHeight:'35%', width: '90%' }}>
+        <View style={{ flex: 1, minHeight: '35%', width: '90%' }}>
             <View >
                 <Carousel
+                    onSnapToItem={(index) => handleClick(index)}
                     key={`${loop}`}
                     ref={r}
                     loop={loop}

@@ -40,7 +40,6 @@ export const AddProject = ({ navigation }) => {
                     color: project.color
                 }))
             }));
-            console.log(transformedObject);
             setListDataSource(transformedObject);
         }
 
