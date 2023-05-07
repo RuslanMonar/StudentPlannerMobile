@@ -1,18 +1,20 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, TextInput, Button, Alert  } from 'react-native';
+import { StyleSheet, Alert } from 'react-native';
 import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
-import { Text, Icon, Pressable, Box, Divider } from "native-base";
+import { Text, Icon, Pressable, Box, Divider, Input, Button } from "native-base";
 import { PriorityPicker } from './PriorityPicker';
 import { TomatosSlider } from './TomatosSlider';
 import { DatePicker } from '../DatePicker';
 
-export const TaskDetails = ({ task, closeDrawer }) => {
+export const TaskDetails = ({ task, closeDrawer, editTaskClosed=false, setEditTaskClosed }) => {
     const [showPriorityPickerModal, setShowPriorityPickerModal] = useState(false);
     const [selectedPriority, setSelectedPriority] = useState(task?.flag);
-    const [clickedIcons, setClickedIcons] = useState(0);
+    const [clickedIcons, setClickedIcons] = useState(task?.flag);
     const [showDateModal, setShowDateModal] = useState(false);
-    const [selectedStartDate, setSelectedStartDate] = useState(null);
+    const [selectedStartDate, setSelectedStartDate] = useState(task?.date);
     const [modifiedDate, setModifiedDate] = useState('');
+    
+
     const getPriority = (color) => {
         if (color == 'red') {
             return "error.600"
@@ -77,6 +79,36 @@ export const TaskDetails = ({ task, closeDrawer }) => {
 
     };
 
+    const getFormatedDate = (date) => {
+        if (date) {
+            const newDate = new Date(date.toString());
+
+            const options = {
+                weekday: "long",
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+                hour: "numeric",
+                minute: "numeric",
+                second: "numeric",
+                hour12: false,
+                timeZoneName: "short",
+            };
+
+            var formattedDate = new Intl.DateTimeFormat("en-US", options).format(newDate);
+            return formattedDate;
+        }
+    }
+
+    const closeDrawerResetStates = () => {
+        setSelectedPriority(task?.flag);
+        setClickedIcons(0);
+        setSelectedStartDate(task?.date);
+        setEditTaskClosed(false);
+        setModifiedDate('');
+        closeDrawer();
+    }
+
     const maskDate = (input) => {
         if (input) {
             const digitsOnly = input.replace(/[^\d]/g, ''); // Remove non-digit characters
@@ -91,7 +123,7 @@ export const TaskDetails = ({ task, closeDrawer }) => {
         <Box h="100%" background="gray.100">
             <Box flexDirection="row" justifyContent="center" alignItems="center">
                 <Text fontSize="lg" > Edit Task</Text>
-                <Pressable style={styles.closeButton} onPress={closeDrawer}>
+                <Pressable style={styles.closeButton} onPress={closeDrawerResetStates}>
                     <Icon
                         size="6"
                         as={<MaterialCommunityIcons name="close" />}
@@ -130,10 +162,12 @@ export const TaskDetails = ({ task, closeDrawer }) => {
                     Total time =
                     <Text color="#0071fa" > {calcTotalTime()} </Text>
                 </Text>
-                <TomatosSlider defaultIndex={setDefailtSliderIndex()} width="100%" handleClick={handleClick} />
+                {editTaskClosed && (<TomatosSlider defaultIndex={setDefailtSliderIndex()} width="100%" handleClick={handleClick} />)}
+                
+                
             </Box>
 
-            <Box mt={5} background="white">
+            <Box mt={5} pt={5} background="white" flexDirection="row" flexWrap="wrap" justifyContent="center">
                 <Pressable onPress={() => { setShowDateModal(true); }}>
                     <Box alignItems="center" flexDirection="row">
                         <Icon
@@ -145,16 +179,21 @@ export const TaskDetails = ({ task, closeDrawer }) => {
                         <Text ml={1} mt={2}>Date</Text>
                     </Box>
                 </Pressable>
-                <Text>{selectedStartDate?.toString()}</Text>
-                <View>
-                    <TextInput
+
+                <Box ml={15} flexDirection="row">
+                    <Button background="purple.500" size="sm" title="Modify Date" onPress={() => handleDateModification()} >
+                        Change time
+                    </Button>
+
+                    <Input
                         placeholder="HH:mm"
                         value={maskDate(modifiedDate)}
                         onChangeText={(value) => setModifiedDate(maskDate(value))}
-                        style={{ borderWidth: 0.5, padding: 10, marginBottom: 10, width: "30%" }}
+                        height="40px" width="40%"
                     />
-                    <Button title="Modify Date" onPress={handleDateModification} />
-                </View>
+
+                </Box>
+                <Text mt={2}>{getFormatedDate(selectedStartDate?.toString())}</Text>
             </Box>
 
             <PriorityPicker

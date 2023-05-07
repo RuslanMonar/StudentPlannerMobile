@@ -2,7 +2,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Text, Input, InputGroup, InputLeftAddon, Box, VStack, Icon, Pressable, Checkbox, Avatar } from "native-base";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useState, useEffect, useRef } from 'react';
-import { Keyboard, LayoutAnimation, ScrollView, DrawerLayoutAndroid } from 'react-native';
+import { Keyboard, LayoutAnimation, ScrollView, DrawerLayoutAndroid, Dimensions } from 'react-native';
 import { CreateTaskSidebar } from "../../components/Tasks/CreateTaskSidebar";
 import PopupLoader from './../../components/PopupLoader';
 import tasksGateway from "../../gateways/tasksGateway";
@@ -14,121 +14,122 @@ const MainScreen = ({ navigation }) => {
     const [loading, setLoading] = useState(false);
     const [tasks, setTasks] = useState([]);
     const [selectedTask, setSelectedTask] = useState(null);
+    const [editTaskClosed, setEditTaskClosed] = useState(false);
     const inputRef = useRef(null);
     const drawer = useRef(null);
 
     useEffect(() => {
-       // getTasksAsync();
-        var response = [
-            {
-              "color": "#FF6B6B",
-              "folderId": 16,
-              "id": 1,
-              "projectTasks": [
-                {
-                  "completed": false,
-                  "date": "2023-05-06T09:00:00Z",
-                  "deleted": false,
-                  "description": null,
-                  "flag": "red",
-                  "id": 13,
-                  "project": {
-                    "color": "#FF6B6B",
-                    "folder": null,
-                    "folderId": 16,
-                    "id": 1,
-                    "title": "Project 1",
-                    "userId": "9542147e-4353-4a17-a172-15b34c60f9c0",
-                  },
-                  "projectId": 1,
-                  "timeCompleted": 0,
-                  "timeLeft": 75,
-                  "title": "Test 1",
-                  "tomatoCount": 3,
-                  "tomatoLength": 25,
-                  "totalTime": 75,
-                },
-                {
-                  "completed": false,
-                  "date": "2023-05-06T09:00:00Z",
-                  "deleted": false,
-                  "description": null,
-                  "flag": "red",
-                  "id": 14,
-                  "project": {
-                    "color": "#FF6B6B",
-                    "folder": null,
-                    "folderId": 16,
-                    "id": 1,
-                    "title": "Project 1",
-                    "userId": "9542147e-4353-4a17-a172-15b34c60f9c0",
-                  },
-                  "projectId": 1,
-                  "timeCompleted": 0,
-                  "timeLeft": 200,
-                  "title": "Test 2",
-                  "tomatoCount": 8,
-                  "tomatoLength": 25,
-                  "totalTime": 200,
-                },
-              ],
-              "title": "Project 1",
-            },
-            {
-              "color": "#FF6B6B",
-              "folderId": 16,
-              "id": 2,
-              "projectTasks": [],
-              "title": "Project 2",
-            },
-            {
-              "color": "#FF6B6B",
-              "folderId": 16,
-              "id": 3,
-              "projectTasks": [],
-              "title": "Project 3",
-            },
-            {
-              "color": "#FF6B6B",
-              "folderId": 16,
-              "id": 4,
-              "projectTasks": [],
-              "title": "Project 4 ",
-            },
-            {
-              "color": "#FF69B4",
-              "folderId": 17,
-              "id": 5,
-              "projectTasks": [
-                {
-                  "completed": false,
-                  "date": "2023-05-06T09:00:00Z",
-                  "deleted": false,
-                  "description": null,
-                  "flag": "yellow",
-                  "id": 15,
-                  "project": {
-                    "color": "#FF69B4",
-                    "folder": null,
-                    "folderId": 17,
-                    "id": 5,
-                    "title": "Project 2.1",
-                    "userId": "9542147e-4353-4a17-a172-15b34c60f9c0",
-                  },
-                  "projectId": 5,
-                  "timeCompleted": 0,
-                  "timeLeft": 350,
-                  "title": "test task 3",
-                  "tomatoCount": 14,
-                  "tomatoLength": 25,
-                  "totalTime": 350,
-                },
-              ],
-              "title": "Project 2.1",
-            },
-        ];
+        getTasksAsync();
+        // var response = [
+        //     {
+        //       "color": "#FF6B6B",
+        //       "folderId": 16,
+        //       "id": 1,
+        //       "projectTasks": [
+        //         {
+        //           "completed": false,
+        //           "date": "2023-05-06T09:00:00Z",
+        //           "deleted": false,
+        //           "description": null,
+        //           "flag": "red",
+        //           "id": 13,
+        //           "project": {
+        //             "color": "#FF6B6B",
+        //             "folder": null,
+        //             "folderId": 16,
+        //             "id": 1,
+        //             "title": "Project 1",
+        //             "userId": "9542147e-4353-4a17-a172-15b34c60f9c0",
+        //           },
+        //           "projectId": 1,
+        //           "timeCompleted": 0,
+        //           "timeLeft": 75,
+        //           "title": "Test 1",
+        //           "tomatoCount": 3,
+        //           "tomatoLength": 25,
+        //           "totalTime": 75,
+        //         },
+        //         {
+        //           "completed": false,
+        //           "date": "2023-05-06T09:00:00Z",
+        //           "deleted": false,
+        //           "description": null,
+        //           "flag": "red",
+        //           "id": 14,
+        //           "project": {
+        //             "color": "#FF6B6B",
+        //             "folder": null,
+        //             "folderId": 16,
+        //             "id": 1,
+        //             "title": "Project 1",
+        //             "userId": "9542147e-4353-4a17-a172-15b34c60f9c0",
+        //           },
+        //           "projectId": 1,
+        //           "timeCompleted": 0,
+        //           "timeLeft": 200,
+        //           "title": "Test 2",
+        //           "tomatoCount": 8,
+        //           "tomatoLength": 25,
+        //           "totalTime": 200,
+        //         },
+        //       ],
+        //       "title": "Project 1",
+        //     },
+        //     {
+        //       "color": "#FF6B6B",
+        //       "folderId": 16,
+        //       "id": 2,
+        //       "projectTasks": [],
+        //       "title": "Project 2",
+        //     },
+        //     {
+        //       "color": "#FF6B6B",
+        //       "folderId": 16,
+        //       "id": 3,
+        //       "projectTasks": [],
+        //       "title": "Project 3",
+        //     },
+        //     {
+        //       "color": "#FF6B6B",
+        //       "folderId": 16,
+        //       "id": 4,
+        //       "projectTasks": [],
+        //       "title": "Project 4 ",
+        //     },
+        //     {
+        //       "color": "#FF69B4",
+        //       "folderId": 17,
+        //       "id": 5,
+        //       "projectTasks": [
+        //         {
+        //           "completed": false,
+        //           "date": "2023-05-06T09:00:00Z",
+        //           "deleted": false,
+        //           "description": null,
+        //           "flag": "yellow",
+        //           "id": 15,
+        //           "project": {
+        //             "color": "#FF69B4",
+        //             "folder": null,
+        //             "folderId": 17,
+        //             "id": 5,
+        //             "title": "Project 2.1",
+        //             "userId": "9542147e-4353-4a17-a172-15b34c60f9c0",
+        //           },
+        //           "projectId": 5,
+        //           "timeCompleted": 0,
+        //           "timeLeft": 350,
+        //           "title": "test task 3",
+        //           "tomatoCount": 14,
+        //           "tomatoLength": 25,
+        //           "totalTime": 350,
+        //         },
+        //       ],
+        //       "title": "Project 2.1",
+        //     },
+        // ];
         
-        setTasks(response);
+        // setTasks(response);
 
         const keyboardWillShowSub = Keyboard.addListener(
             'keyboardWillShow',
@@ -198,9 +199,15 @@ const MainScreen = ({ navigation }) => {
             {loading ? (<PopupLoader />) : null}
             <DrawerLayoutAndroid
                 ref={drawer}
-                drawerWidth={300}
+                drawerWidth={Dimensions.get('window').width}
                 drawerPosition='right'
-                renderNavigationView={() => <TaskDetails closeDrawer={closeDrawer} task={selectedTask} />}>
+                renderNavigationView={() => {
+                    if (selectedTask) {
+                        return <TaskDetails closeDrawer={closeDrawer} task={selectedTask} editTaskClosed={editTaskClosed} setEditTaskClosed={setEditTaskClosed} />
+                    }
+
+                    return <></>
+                }}>
 
                 <Pressable onPress={handlePressOutsideInput}>
                     <SafeAreaView>
@@ -245,7 +252,7 @@ const MainScreen = ({ navigation }) => {
                                                 )}
 
                                                 {project?.projectTasks?.map((task, taskIndex) => (
-                                                    <Pressable key={taskIndex} onPress={() => { setSelectedTask(task); drawer.current.openDrawer() }}>
+                                                    <Pressable key={taskIndex} onPress={() => { setSelectedTask(task); setEditTaskClosed(true); drawer.current.openDrawer() }}>
                                                         <Box
                                                             style={{ borderBottomWidth: 0.5, borderBottomColor: '#e0e0e0' }}
                                                             justifyContent="space-between"
