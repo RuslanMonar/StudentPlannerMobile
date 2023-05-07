@@ -3,6 +3,16 @@ import { Button, Modal, Center, Text } from "native-base";
 import CalendarPicker from 'react-native-calendar-picker';
 
 export const DatePicker = ({ showModal, setShowModal, selectedStartDate, setSelectedStartDate }) => {
+    const getDate = (date) => {
+
+            var datePcikerTime = date.toString();
+            const dateObj = new Date(datePcikerTime);
+            const localDate = dateObj.toLocaleString(undefined, { hour12: false });
+
+            return localDate;
+
+    }
+    
     return (
         <Center>
             <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
@@ -26,6 +36,7 @@ export const DatePicker = ({ showModal, setShowModal, selectedStartDate, setSele
                             </Button>
                             <Button background="yellow.500" onPress={() => {
                                 setShowModal(false);
+                                //console.log(selectedStartDate)
                             }}>
                                 <Text color="black">Save</Text>
                             </Button>

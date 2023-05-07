@@ -13,12 +13,122 @@ const MainScreen = ({ navigation }) => {
     const [isInputActive, setIsInputActive] = useState(false);
     const [loading, setLoading] = useState(false);
     const [tasks, setTasks] = useState([]);
+    const [selectedTask, setSelectedTask] = useState(null);
     const inputRef = useRef(null);
     const drawer = useRef(null);
-    const [drawerPosition, setDrawerPosition] = useState('right');
 
     useEffect(() => {
-        getTasksAsync();
+       // getTasksAsync();
+        var response = [
+            {
+              "color": "#FF6B6B",
+              "folderId": 16,
+              "id": 1,
+              "projectTasks": [
+                {
+                  "completed": false,
+                  "date": "2023-05-06T09:00:00Z",
+                  "deleted": false,
+                  "description": null,
+                  "flag": "red",
+                  "id": 13,
+                  "project": {
+                    "color": "#FF6B6B",
+                    "folder": null,
+                    "folderId": 16,
+                    "id": 1,
+                    "title": "Project 1",
+                    "userId": "9542147e-4353-4a17-a172-15b34c60f9c0",
+                  },
+                  "projectId": 1,
+                  "timeCompleted": 0,
+                  "timeLeft": 75,
+                  "title": "Test 1",
+                  "tomatoCount": 3,
+                  "tomatoLength": 25,
+                  "totalTime": 75,
+                },
+                {
+                  "completed": false,
+                  "date": "2023-05-06T09:00:00Z",
+                  "deleted": false,
+                  "description": null,
+                  "flag": "red",
+                  "id": 14,
+                  "project": {
+                    "color": "#FF6B6B",
+                    "folder": null,
+                    "folderId": 16,
+                    "id": 1,
+                    "title": "Project 1",
+                    "userId": "9542147e-4353-4a17-a172-15b34c60f9c0",
+                  },
+                  "projectId": 1,
+                  "timeCompleted": 0,
+                  "timeLeft": 200,
+                  "title": "Test 2",
+                  "tomatoCount": 8,
+                  "tomatoLength": 25,
+                  "totalTime": 200,
+                },
+              ],
+              "title": "Project 1",
+            },
+            {
+              "color": "#FF6B6B",
+              "folderId": 16,
+              "id": 2,
+              "projectTasks": [],
+              "title": "Project 2",
+            },
+            {
+              "color": "#FF6B6B",
+              "folderId": 16,
+              "id": 3,
+              "projectTasks": [],
+              "title": "Project 3",
+            },
+            {
+              "color": "#FF6B6B",
+              "folderId": 16,
+              "id": 4,
+              "projectTasks": [],
+              "title": "Project 4 ",
+            },
+            {
+              "color": "#FF69B4",
+              "folderId": 17,
+              "id": 5,
+              "projectTasks": [
+                {
+                  "completed": false,
+                  "date": "2023-05-06T09:00:00Z",
+                  "deleted": false,
+                  "description": null,
+                  "flag": "yellow",
+                  "id": 15,
+                  "project": {
+                    "color": "#FF69B4",
+                    "folder": null,
+                    "folderId": 17,
+                    "id": 5,
+                    "title": "Project 2.1",
+                    "userId": "9542147e-4353-4a17-a172-15b34c60f9c0",
+                  },
+                  "projectId": 5,
+                  "timeCompleted": 0,
+                  "timeLeft": 350,
+                  "title": "test task 3",
+                  "tomatoCount": 14,
+                  "tomatoLength": 25,
+                  "totalTime": 350,
+                },
+              ],
+              "title": "Project 2.1",
+            },
+        ];
+        
+        setTasks(response);
 
         const keyboardWillShowSub = Keyboard.addListener(
             'keyboardWillShow',
@@ -66,7 +176,22 @@ const MainScreen = ({ navigation }) => {
 
     const closeDrawer = () => {
         drawer.current.closeDrawer();
-      };
+    };
+
+    const getPriority = (color) => {
+        if (color == 'red') {
+            return "error.600"
+        }
+        if (color == 'yellow') {
+            return "warning.400"
+        }
+        if (color == 'green') {
+            return "success.500"
+        }
+        if (color == 'gray') {
+            return "gray.400"
+        }
+    }
 
     return (
         <Box w="100%" h="100%">
@@ -74,9 +199,9 @@ const MainScreen = ({ navigation }) => {
             <DrawerLayoutAndroid
                 ref={drawer}
                 drawerWidth={300}
-                drawerPosition={drawerPosition}
-                renderNavigationView={() => <TaskDetails closeDrawer={closeDrawer} />}>
-                
+                drawerPosition='right'
+                renderNavigationView={() => <TaskDetails closeDrawer={closeDrawer} task={selectedTask} />}>
+
                 <Pressable onPress={handlePressOutsideInput}>
                     <SafeAreaView>
                         <Box bg="gray.100" height="100%" width="100%">
@@ -113,14 +238,14 @@ const MainScreen = ({ navigation }) => {
                                         {tasks.map((project, index) => (
                                             <Box key={index}>
                                                 {project.projectTasks.length > 0 && (
-                                                    <Box  flexDirection="row" alignItems="center">
+                                                    <Box flexDirection="row" alignItems="center">
                                                         <Avatar ml={3} my={4} bg={project.color} size="15px" />
                                                         <Text ml={2}>{project.title}</Text>
                                                     </Box>
                                                 )}
 
                                                 {project?.projectTasks?.map((task, taskIndex) => (
-                                                    <Pressable key={taskIndex} onPress={() => drawer.current.openDrawer()}>
+                                                    <Pressable key={taskIndex} onPress={() => { setSelectedTask(task); drawer.current.openDrawer() }}>
                                                         <Box
                                                             style={{ borderBottomWidth: 0.5, borderBottomColor: '#e0e0e0' }}
                                                             justifyContent="space-between"
@@ -129,9 +254,15 @@ const MainScreen = ({ navigation }) => {
                                                             bg="white"
                                                             height="50px">
                                                             <Checkbox colorScheme="orange" value="Writing" ml={3}>
+                                                                <Icon
+                                                                    size="6"
+                                                                    color={getPriority(task.flag)}
+                                                                    as={<MaterialCommunityIcons name="flag" />}
+                                                                />
                                                                 <Box ml={2} flexDirection="column" justifyContent="flex-start">
                                                                     <Text>{task.title}</Text>
                                                                     <Box flexDirection="row">
+
                                                                         {task?.tomatoCount > 5 && (<Text mr={1} style={{ lineHeight: 14 }}>{task?.tomatoCount}</Text>)}
                                                                         {Array.from({ length: task?.tomatoCount <= 5 ? task?.tomatoCount : 1 }, (_, tomatoIndex) => (
                                                                             <Icon key={tomatoIndex}

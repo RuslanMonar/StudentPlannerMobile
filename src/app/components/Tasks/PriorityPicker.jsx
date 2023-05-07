@@ -9,7 +9,6 @@ export const PriorityPicker = ({ showModal, setShowModal, selectedPriority, setS
                 <Modal.Content width="375px" height="50%">
                     <Modal.CloseButton onPress={() => {
                         setShowModal(false);
-                        setSelectedPriority("gray");
                     }} />
                     <Modal.Header>Select Priority</Modal.Header>
                     <Modal.Body>
