@@ -12,6 +12,13 @@ const GetTasks = async () => {
         .then(response => response, error => Promise.reject(ErrorBuilder(error)));
 };
 
+const EditTask = async (data) => {
+    const apiInstance = await api();
+    return apiInstance.post("ProjectTask/EditTask", data)
+        .then(response => response, error => Promise.reject(ErrorBuilder(error)));
+};
+
+
 const ErrorBuilder = (error) => {
     const message =
         (error.response && error.response.data && error.response.data.errors) ||
@@ -24,5 +31,6 @@ const ErrorBuilder = (error) => {
 
 export default {
     CreateTask,
-    GetTasks
+    GetTasks,
+    EditTask
 };

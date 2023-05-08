@@ -202,8 +202,8 @@ const MainScreen = ({ navigation }) => {
                 drawerWidth={Dimensions.get('window').width}
                 drawerPosition='right'
                 renderNavigationView={() => {
-                    if (selectedTask) {
-                        return <TaskDetails closeDrawer={closeDrawer} task={selectedTask} editTaskClosed={editTaskClosed} setEditTaskClosed={setEditTaskClosed} />
+                    if (selectedTask && editTaskClosed) {
+                        return <TaskDetails closeDrawer={closeDrawer} task={selectedTask} editTaskClosed={editTaskClosed} setEditTaskClosed={setEditTaskClosed} getTasksAsync={getTasksAsync} />
                     }
 
                     return <></>
