@@ -1,5 +1,5 @@
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Text, Input, InputGroup, InputLeftAddon, Box, VStack, Icon, Pressable, Checkbox, Avatar } from "native-base";
+import { Text, Input, InputGroup, InputLeftAddon, Box, VStack, Icon, Pressable, Checkbox, Avatar, Button } from "native-base";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useState, useEffect, useRef } from 'react';
 import { Keyboard, LayoutAnimation, ScrollView, DrawerLayoutAndroid, Dimensions } from 'react-native';
@@ -7,6 +7,7 @@ import { CreateTaskSidebar } from "../../components/Tasks/CreateTaskSidebar";
 import PopupLoader from './../../components/PopupLoader';
 import tasksGateway from "../../gateways/tasksGateway";
 import { TaskDetails } from "../../components/Tasks/TaskDetails";
+import { useNavigation } from '@react-navigation/native';
 
 const MainScreen = ({ navigation }) => {
     const [taskName, setTaskName] = useState("");
@@ -15,8 +16,13 @@ const MainScreen = ({ navigation }) => {
     const [tasks, setTasks] = useState([]);
     const [selectedTask, setSelectedTask] = useState(null);
     const [editTaskClosed, setEditTaskClosed] = useState(false);
+    const [showTimer, setShowTimer] = useState(false);
+    const [remainingTime, setRemainingTime] = useState(150);
     const inputRef = useRef(null);
     const drawer = useRef(null);
+    const timerModalRef = useRef();
+
+    
 
     useEffect(() => {
         getTasksAsync();
@@ -128,7 +134,7 @@ const MainScreen = ({ navigation }) => {
         //       "title": "Project 2.1",
         //     },
         // ];
-        
+
         // setTasks(response);
 
         const keyboardWillShowSub = Keyboard.addListener(
@@ -281,12 +287,14 @@ const MainScreen = ({ navigation }) => {
                                                                     </Box>
                                                                 </Box>
                                                             </Checkbox>
-                                                            <Icon
-                                                                mr={5}
-                                                                size="6"
-                                                                color="yellow.500"
-                                                                as={<MaterialCommunityIcons color="black" name="play-circle" />}
-                                                            />
+                                                            <Pressable onPress={() => navigation.navigate("AddProjectsNavigator", { screen: "MainTimer", params: { task: task, getTasksAsync: () => getTasksAsync()  } })}>
+                                                                <Icon
+                                                                    mr={5}
+                                                                    size="6"
+                                                                    color="yellow.500"
+                                                                    as={<MaterialCommunityIcons color="black" name="play-circle" />}
+                                                                />
+                                                            </Pressable>
                                                         </Box>
                                                     </Pressable>
                                                 ))}

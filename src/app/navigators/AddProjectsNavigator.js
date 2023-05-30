@@ -3,6 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { AddFolder } from '../screens/AddProjects/AddFolder';
 import { BackButton } from '../components/BackButton';
 import { AddProject } from '../screens/AddProjects/AddProject';
+import { MainTimer } from '../screens/Timer/MainTimer';
 
 const Stack = createNativeStackNavigator();
 
@@ -17,6 +18,7 @@ export const AddProjectsNavigator = ({ navigation }) => {
 
             <Stack.Screen name="Add Folder" component={AddFolder} />
             <Stack.Screen name="Add Project" component={AddProject} />
+            <Stack.Screen name="MainTimer" component={MainTimer} />
         </Stack.Navigator>
     )
 }
