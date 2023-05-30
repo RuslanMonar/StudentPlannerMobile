@@ -8,7 +8,7 @@ import tasksGateway from '../../gateways/tasksGateway';
 import PopupLoader from '../../components/PopupLoader';
 
 export const MainTimer = ({ route, navigation }) => {
-    const { task, getTasksAsync  } = route.params;
+    const { task } = route.params;
     const [timerKey, setTimerKey] = useState(task.id);
     const [isPlaying, setIsPlaying] = React.useState(false)
     const [timer, setTimer] = React.useState()
@@ -68,7 +68,6 @@ export const MainTimer = ({ route, navigation }) => {
         editTaskAsync();
         setTimerKey(timerKey + 1);
         navigation.goBack();
-        getTasksAsync();
     }
 
     return (
@@ -106,15 +105,17 @@ export const MainTimer = ({ route, navigation }) => {
                 key={timerKey}
                 isPlaying={isPlaying}
                 duration={task.tomatoLength * 60}
-                colors={['#eab308', '#F7B801', '#A30000', '#A30000']}
-                colorsTime={[7, 5, 2, 0]}
+                colors={["#eab308",'#004777', '#F7B801', '#A30000', '#A30000']}
+                size={250}
+                strokeWidth={15}
+                strokeLinecap="butt"
                 onComplete={() => {
                     return ({ shouldRepeat: false, delay: 2 })
                 }}
                 updateInterval={1}
             >
                 {({ remainingTime }) => (
-                    <Text fontSize="20">
+                    <Text fontSize="35">
                         {setTimer(remainingTime)}
                         {formatTime(remainingTime)}
                     </Text>
@@ -129,13 +130,13 @@ export const MainTimer = ({ route, navigation }) => {
                     borderWidth: 1,
                     borderColor: 'lightgrey',
                     borderRadius: 35,
-                    backgroundColor: '#f5f5f5',
+                    backgroundColor: isPlaying ? "#e63751":'#32a852' ,
                     justifyContent: 'center'
                 }}
                     onPress={() => { setIsPlaying(prev => !prev) }} >
                     <Icon
                         size="12"
-                        color="gray.400"
+                        color="white"
                         as={<MaterialCommunityIcons name={isPlaying ? "stop" : "play"} />}
                     />
                 </Button>
@@ -148,18 +149,18 @@ export const MainTimer = ({ route, navigation }) => {
                     borderWidth: 1,
                     borderColor: 'lightgrey',
                     borderRadius: 35,
-                    backgroundColor: '#f5f5f5',
+                    backgroundColor: '#377de6',
                     justifyContent: 'center'
                 }}
                     onPress={() => setTimerKey(timerKey + 1)} >
                     <Icon
                         size="12"
-                        color="gray.400"
+                        color="white"
                         as={<MaterialCommunityIcons name='restart' />}
                     />
                 </Button>
             </Box>
-            <Box mt="7">
+            <Box mt="35px">
                 <Button style={{
                     elevation: 4,
                     height: 70,

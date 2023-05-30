@@ -287,7 +287,7 @@ const MainScreen = ({ navigation }) => {
                                                                     </Box>
                                                                 </Box>
                                                             </Checkbox>
-                                                            <Pressable onPress={() => navigation.navigate("AddProjectsNavigator", { screen: "MainTimer", params: { task: task, getTasksAsync: () => getTasksAsync()  } })}>
+                                                            <Pressable onPress={() => navigation.navigate("AddProjectsNavigator", { screen: "MainTimer", params: { task: task} })}>
                                                                 <Icon
                                                                     mr={5}
                                                                     size="6"
