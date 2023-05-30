@@ -1,17 +1,23 @@
 import { api } from '../shared/config/axios';
 
-const CreateProject = async (title, color, folderId) => {
-    let data = { title, color, folderId };
+const CreateTask = async (data) => {
     const apiInstance = await api();
-    return apiInstance.post("Projects", data)
+    return apiInstance.post("ProjectTask", data)
         .then(response => response, error => Promise.reject(ErrorBuilder(error)));
 };
 
-const GetProjects = async () => {
+const GetTasks = async () => {
     const apiInstance = await api();
-    return apiInstance.get("Projects")
+    return apiInstance.get("ProjectTask")
         .then(response => response, error => Promise.reject(ErrorBuilder(error)));
 };
+
+const EditTask = async (data) => {
+    const apiInstance = await api();
+    return apiInstance.post("ProjectTask/EditTask", data)
+        .then(response => response, error => Promise.reject(ErrorBuilder(error)));
+};
+
 
 const ErrorBuilder = (error) => {
     const message =
@@ -24,6 +30,7 @@ const ErrorBuilder = (error) => {
 
 
 export default {
-    CreateProject,
-    GetProjects
+    CreateTask,
+    GetTasks,
+    EditTask
 };
