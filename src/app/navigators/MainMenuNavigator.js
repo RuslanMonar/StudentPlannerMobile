@@ -3,6 +3,7 @@ import MainScreen from "../screens/Main/MainScreen";
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { AddProjectsNavigator } from "./AddProjectsNavigator";
 import { CONSTANTS } from '../constants/routesNames';
+import { Statistic } from "../screens/Statistics/Statistic";
 
 const Drawer = createDrawerNavigator();
 
@@ -15,6 +16,7 @@ const MainMenuNavigator = () => {
             }
         }}>
             <Drawer.Screen name="Home" component={MainScreen} />
+            <Drawer.Screen name="Statistic" component={Statistic} />
             <Drawer.Screen name={CONSTANTS.NestedNavigators.AddProjectsNavigator} component={AddProjectsNavigator} options={{ headerShown: false }} />
         </Drawer.Navigator>
     );

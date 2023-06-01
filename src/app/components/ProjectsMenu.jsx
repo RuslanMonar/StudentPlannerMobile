@@ -36,7 +36,7 @@ export const ProjectsMenu = (props) => {
     }, [isDrawerOpen]);
 
     return (
-        <Box height="65%">
+        <Box height="50%">
             <ScrollView>
                 {listDataSource.map((item, key) => (
                     <Expandable

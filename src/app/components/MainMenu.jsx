@@ -50,6 +50,8 @@ const MainMenu = (props) => {
     switch (screenName) {
       case "Home":
         return "format-list-bulleted";
+        case "Statistic":
+          return "chart-bar";
       default:
         return undefined;
     }

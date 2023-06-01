@@ -12,6 +12,7 @@ export const MainTimer = ({ route, navigation }) => {
     const [timerKey, setTimerKey] = useState(task.id);
     const [isPlaying, setIsPlaying] = React.useState(false)
     const [timer, setTimer] = React.useState()
+    const [startDate, setStartDate] = React.useState()
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
@@ -43,20 +44,16 @@ export const MainTimer = ({ route, navigation }) => {
         }
     }
 
-    const editTaskAsync = async () => {
+    const addTaskTrackAsync = async () => {
         try {
             setLoading(true);
             var data = {
                 TaskId: task?.id,
-                ProjectId: task?.project?.id,
-                Title: task?.title,
-                TomatoCount: task?.tomatoCount,
-                Flag: task?.flag,
-                Date: task?.date,
-                TimeCompleted : Math.trunc((task.tomatoLength * 60 - timer)/60)
+                StartDate: startDate,
+                TimeSpentInMinutes : Math.trunc((task.tomatoLength * 60 - timer)/60)
             };
-            await tasksGateway.EditTask(data);
-            setLoading(false);
+            await tasksGateway.AddTaskTrack(data);
+            
         } catch (error) {
             console.log(error);
             setLoading(false);
@@ -65,9 +62,13 @@ export const MainTimer = ({ route, navigation }) => {
 
     const saveResults = () => {
         setIsPlaying(false)
-        editTaskAsync();
+        addTaskTrackAsync();
         setTimerKey(timerKey + 1);
-        navigation.goBack();
+        setTimeout(() => {
+            setLoading(false);
+            navigation.goBack();
+          }, 2000);
+        
     }
 
     return (
@@ -133,7 +134,12 @@ export const MainTimer = ({ route, navigation }) => {
                     backgroundColor: isPlaying ? "#e63751":'#32a852' ,
                     justifyContent: 'center'
                 }}
-                    onPress={() => { setIsPlaying(prev => !prev) }} >
+                    onPress={() => {
+                        setIsPlaying(prev => !prev)
+                        if (!startDate) {
+                            setStartDate(new Date());
+                        }
+                    }} >
                     <Icon
                         size="12"
                         color="white"

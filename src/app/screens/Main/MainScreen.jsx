@@ -1,8 +1,8 @@
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Text, Input, InputGroup, InputLeftAddon, Box, VStack, Icon, Pressable, Checkbox, Avatar, Button } from "native-base";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { useState, useEffect, useRef } from 'react';
-import { Keyboard, LayoutAnimation, ScrollView, DrawerLayoutAndroid, Dimensions } from 'react-native';
+import { useState, useEffect, useRef, useCallback } from 'react';
+import { Keyboard, LayoutAnimation, ScrollView, DrawerLayoutAndroid, Dimensions, RefreshControl } from 'react-native';
 import { CreateTaskSidebar } from "../../components/Tasks/CreateTaskSidebar";
 import PopupLoader from './../../components/PopupLoader';
 import tasksGateway from "../../gateways/tasksGateway";
@@ -10,6 +10,7 @@ import { TaskDetails } from "../../components/Tasks/TaskDetails";
 import { useNavigation } from '@react-navigation/native';
 
 const MainScreen = ({ navigation }) => {
+    const [refreshing, setRefreshing] = useState(false);
     const [taskName, setTaskName] = useState("");
     const [isInputActive, setIsInputActive] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -23,6 +24,14 @@ const MainScreen = ({ navigation }) => {
     const timerModalRef = useRef();
 
     
+    const onRefresh = useCallback(() => {
+        setRefreshing(true);
+        getTasksAsync();
+        
+            setRefreshing(false);
+          
+
+    }, []);
 
     useEffect(() => {
         getTasksAsync();
@@ -246,7 +255,11 @@ const MainScreen = ({ navigation }) => {
                                         />
                                     </InputGroup>
                                 </Box>
-                                <ScrollView>
+                                <ScrollView
+                                refreshControl={
+                                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                                }
+                                >
                                     <Box>
                                         {tasks.map((project, index) => (
                                             <Box key={index}>

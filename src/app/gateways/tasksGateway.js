@@ -18,6 +18,18 @@ const EditTask = async (data) => {
         .then(response => response, error => Promise.reject(ErrorBuilder(error)));
 };
 
+const AddTaskTrack = async (data) => {
+    const apiInstance = await api();
+    return apiInstance.post("ProjectTask/AddTaskTrack", data)
+        .then(response => response, error => Promise.reject(ErrorBuilder(error)));
+};
+
+const GetTaskTrackByMonth = async () => {
+    const apiInstance = await api();
+    return apiInstance.get("ProjectTask/GetTaskTrackByMonth")
+        .then(response => response, error => Promise.reject(ErrorBuilder(error)));
+};
+
 
 const ErrorBuilder = (error) => {
     const message =
@@ -32,5 +44,7 @@ const ErrorBuilder = (error) => {
 export default {
     CreateTask,
     GetTasks,
-    EditTask
+    EditTask,
+    AddTaskTrack,
+    GetTaskTrackByMonth
 };
