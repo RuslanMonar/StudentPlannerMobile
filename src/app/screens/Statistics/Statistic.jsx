@@ -22,6 +22,8 @@ export const Statistic = ({ navigation }) => {
     const [projectTaskNames, setProjectTaskNames] = React.useState([]);
     const [projectTaskTime, setProjectTaskTime] = React.useState([]);
 
+    const [roundChartData, setRoundChartData] = React.useState([]);
+
     const [data, setData] = useState([
         Math.random() * 100,
         Math.random() * 100,
@@ -60,6 +62,16 @@ export const Statistic = ({ navigation }) => {
             setHours(result.data.spentMonthHours)
             setProjectTaskNames(result.data.projectTaskNames)
             setProjectTaskTime(result.data.projectTaskTime)
+
+            var roundChart = [];
+            for (let i = 0; i < result.data.projectNames.length; i++) {
+                if (result.data.projectTime[i] != 0) {
+                    roundChart.push({ y: result.data.projectTime[i], x: result.data.projectTime[i]+'h'});
+                }
+            }
+
+            setRoundChartData(roundChart);
+
             if (result) {
                 //setTasks(result.data);
             }
@@ -125,17 +137,11 @@ export const Statistic = ({ navigation }) => {
                     
                     <Box bg="black" justifyContent="center" alignItems="center">
                         <VictoryPie
-                            data={[
-                                { y: 10, x: '5' },
-                                { y: 90, x: '90' },
-                                { y: 50, x: '50' },
-                                { y: 20, x: '20' },
-                                { y: 70, x: '70' },
-                            ]}
+                            data={roundChartData}
+                            colorScale={["tomato", "orange", "gold", "cyan", "navy" ]}
                             width={250}
                             height={250}
                             innerRadius={50}
-                            colorScale={['red', 'blue', 'yellow', 'green', 'tomato']}
                             style={{
                                 labels: {
                                     fill: 'white', fontSize: 15, padding: 7,
